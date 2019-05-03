@@ -1,7 +1,9 @@
 package ese543.helpmi;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,12 +13,14 @@ public class MainActivity extends AppCompatActivity {
         boolean loggedIn = false;
         if(loggedIn)
         {
-            setContentView(R.layout.activity_main);
         }
         else
         {
-            setContentView(R.layout.activity_login);
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+
         }
 
     }
+
 }

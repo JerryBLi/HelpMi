@@ -1,5 +1,4 @@
-package ese543.helpmi.startup;
-
+package ese543.helpmi;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import ese543.helpmi.R;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername;
@@ -23,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
         textViewErrorMsg = (TextView)findViewById(R.id.textViewErrorMsg);
     }
 
-    public void onclick_login(View view)
+    public void login(View view)
     {
         String username = editTextUsername.getText().toString();
         String password = editTextPassword.getText().toString();
@@ -39,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void onclick_createUser(View view)
+    public void createUser(View view)
     {
         Intent createUserIntent = new Intent(this,CreateNewUserActivity.class);
         startActivity(createUserIntent);
