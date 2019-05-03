@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Map;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername;
@@ -19,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
         editTextUsername = (EditText)findViewById(R.id.editTextUsername);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         textViewErrorMsg = (TextView)findViewById(R.id.textViewErrorMsg);
+
+
     }
 
     public void login(View view)

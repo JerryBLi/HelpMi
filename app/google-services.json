@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "297724002133",
+    "firebase_url": "https://helpmi-c9044.firebaseio.com",
+    "project_id": "helpmi-c9044",
+    "storage_bucket": "helpmi-c9044.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297724002133:android:e80f710eefabd74c",
+        "android_client_info": {
+          "package_name": "ese543.helpmi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297724002133-kauaq65s3r0hod2b95ughe6camb97crj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ese543.helpmi",
+            "certificate_hash": "4f9628941603a056dd19594567e626ed4e8fa8c6"
+          }
+        },
+        {
+          "client_id": "297724002133-6ie608qmkf9ufobjfe1r58m425di7nic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ese543.helpmi",
+            "certificate_hash": "061d5aee256ec2aa003b248195885aa08d90eddd"
+          }
+        },
+        {
+          "client_id": "297724002133-v4dh5l3vrbqss8viv5shist7o4necl1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNWhGlVRtKbr_-1R63DfGHJu2l6oUL4Vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297724002133-v4dh5l3vrbqss8viv5shist7o4necl1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
