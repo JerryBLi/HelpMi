@@ -95,10 +95,12 @@ public class CreateNewUserActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+            Intent loginIntent = new Intent(this,LoginActivity.class);
+            startActivity(loginIntent);
         }
 
-        Intent loginIntent = new Intent(this,LoginActivity.class);
-        startActivity(loginIntent);
+
     }
 
     private boolean authenticateFields()
