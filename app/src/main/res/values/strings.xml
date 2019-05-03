@@ -15,6 +15,11 @@
     </string>
     <string name="title_activity_main_page">MainPage</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_map">Task Map</string>
+    <string name="title_list">Task List</string>
+    <string name="title_messages">My Messages</string>
+    <string name="title_newPost">New Post</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

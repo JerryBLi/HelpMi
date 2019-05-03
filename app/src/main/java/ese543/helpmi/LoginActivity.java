@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import java.util.Map;
 
+import ese543.helpmi.core.MainPage;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername;
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         {
             //TODO
             //connect to DB and check if user exists. If exists, populate the user field
+            Intent i = new Intent(this, MainPage.class);
+            startActivity(i);
         }
         else
         {
