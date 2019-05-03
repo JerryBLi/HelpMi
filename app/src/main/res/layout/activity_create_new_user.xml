@@ -97,4 +97,10 @@
         android:onClick="createUser"
         android:text="Create New User" />
 
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark" />
+
 </LinearLayout>

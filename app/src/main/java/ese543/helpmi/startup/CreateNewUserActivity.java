@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ese543.helpmi.R;
 
 public class CreateNewUserActivity extends AppCompatActivity {
+
 
     private EditText editTextUsername;
     private EditText editTextEmail;
@@ -15,6 +17,7 @@ public class CreateNewUserActivity extends AppCompatActivity {
     private EditText editTextLastName;
     private EditText editTextPassword;
     private EditText editTextPassword2;
+    private TextView textViewError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class CreateNewUserActivity extends AppCompatActivity {
         editTextLastName = findViewById(R.id.editTextLastName);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextPassword2 = findViewById(R.id.editTextPassword2);
+        textViewError = findViewById(R.id.textViewError);
     }
 
     public void createUser(View view)
@@ -50,7 +54,12 @@ public class CreateNewUserActivity extends AppCompatActivity {
         //Authenticate Last Name
 
         //Authenticate Password
-
+        String p1 = editTextPassword.getText().toString();
+        String p2 = editTextPassword2.getText().toString();
+        if(!p1.equals(p2) && p1.length() <= 4)
+        {
+            textViewError.setText("Error!");
+        }
         return true;
 
     }
