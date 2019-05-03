@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".startup.CreateNewUserActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textWebEmailAddress"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/textViewFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="First Name" />
+
+    <EditText
+        android:id="@+id/editTextFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last Name" />
+
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textViewPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Repeat Password" />
+
+    <EditText
+        android:id="@+id/editTextPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Repeat Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createUser"
+        android:text="Create New User" />
+
+</LinearLayout>
