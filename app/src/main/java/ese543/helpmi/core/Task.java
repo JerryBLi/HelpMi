@@ -43,6 +43,20 @@ public class Task {
         userAssigned = "";
     }
 
+    public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned)
+    {
+        this.userOwner = userOwner;
+        this.title = title;
+        this.deliveryDate = deliveryDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.payment = payment;
+        this.isNegotiable = isNegotiable;
+        this.description = description;
+        this.isComplete = isComplete;
+        this.userAssigned = userAssigned;
+    }
+
     public void uploadToDatabase()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -90,4 +104,28 @@ public class Task {
                     }
                 });
     }
+
+    // Getters
+    public String getUserOwner(){return userOwner;}
+    public String getUserAssigned(){return userAssigned;}
+    public String getTitle(){ return title;}
+    public Date getDeliveryDate(){return deliveryDate;}
+    public double getLatitude(){return latitude;}
+    public double getLongitude(){return longitude;}
+    public double getPayment(){return payment;}
+    public boolean getIsNegotiable(){return isNegotiable;}
+    public boolean getIsComplete(){return isComplete;}
+    public String getDescription(){return description;}
+
+    //Setters
+    public void userOwner(String userOwner){this.userOwner = userOwner;}
+    public void userAssigned(String userAssigned){this.userAssigned = userAssigned;}
+    public void title(String title){this.title = title;}
+    public void deliveryDate(Date deliveryDate){this.deliveryDate = deliveryDate;}
+    public void latitude(double latitude){this.latitude = latitude;}
+    public void longitude(double longitude){this.longitude = longitude;}
+    public void payment(double payment){this.payment=payment;}
+    public void isNegotiable(boolean isNegotiable){this.isNegotiable=isNegotiable;}
+    public void isComplete(boolean isComplete){this.isComplete = isComplete;}
+    public void description(String description){this.description=description;}
 }
