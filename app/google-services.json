@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "297724002133-91248m7lf6eliomk9v9e6r0240ei54p6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ese543.helpmi",
+            "certificate_hash": "30f05c3f9a5e6002a346dfd1080556427a92f8ae"
+          }
+        },
+        {
           "client_id": "297724002133-kauaq65s3r0hod2b95ughe6camb97crj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

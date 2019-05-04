@@ -1,6 +1,6 @@
 package ese543.helpmi.core;
 
-import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -84,6 +83,11 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         toolbar = getSupportActionBar();
         toolbar.setTitle("Task Map");
         loadFragment(new TaskFragment());
+    }
+
+    public void openMap(View view) {
+        Intent i = new Intent(this, MapsActivity.class);
+        startActivity(i);
     }
 
     private void loadFragment(Fragment fragment) {
