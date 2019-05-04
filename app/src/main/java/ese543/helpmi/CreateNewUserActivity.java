@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ese543.helpmi.R;
+import ese543.helpmi.core.User;
 
 public class CreateNewUserActivity extends AppCompatActivity {
     private static final String TAG = CreateNewUserActivity.class.getClass().getSimpleName();
@@ -33,6 +35,8 @@ public class CreateNewUserActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextPassword2;
     private TextView textViewError;
+
+    private boolean emailExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,49 +59,42 @@ public class CreateNewUserActivity extends AppCompatActivity {
         //Authenticate the fields
         if(authenticateFields())
         {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            // Create a new user with a first and last name
-            Map<String, Object> user = new HashMap<>();
-            user.put("Username", editTextUsername.getText().toString());
-            user.put("Email", editTextEmail.getText().toString());
-            user.put("Firstname", editTextFirstName.getText().toString());
-            user.put("Lastname", editTextLastName.getText().toString());
-            user.put("Password", editTextPassword.getText().toString());
+            // Get User fields
+            String userName = editTextUsername.getText().toString();
+            String email = editTextEmail.getText().toString();
+            String firstName = editTextFirstName.getText().toString();
+            String lastName = editTextLastName.getText().toString();
+            String password = editTextPassword.getText().toString();
 
-            // Add a new document with a generated ID
-            db.collection("users")
-                    .add(user)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });
+            // Create User
+            final User user = new User(userName, email, firstName, lastName, password);
 
-            db.collection("users")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                }
-                            }
-                            else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
+            // Upload User to database
+            user.checkUserExists(new User.UserAlreadyExists() {
+                @Override
+                public void onCallback(boolean exists) {
 
-            Intent loginIntent = new Intent(this,LoginActivity.class);
-            startActivity(loginIntent);
+                    Log.d(TAG, "onCallback...userExists:" + exists);
+                    if(exists){
+                        Log.d(TAG, "onCallback...userExists else:" + exists);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Email already exists!",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    else{
+                        Log.d(TAG, "onCallback...userExists if:" + exists);
+                        user.uploadToDatabase();
+                        Toast toast = Toast.makeText(getApplicationContext(),"Registered User!",Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        Intent loginIntent = new Intent(CreateNewUserActivity.this,LoginActivity.class);
+                        startActivity(loginIntent);
+
+                    }
+
+                }
+            });
+
+
         }
 
 
@@ -128,6 +125,7 @@ public class CreateNewUserActivity extends AppCompatActivity {
             sb.append("Invalid Email!\n");
 
         }
+
 
         //TODO - make sure email is unique
 
