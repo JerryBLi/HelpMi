@@ -2,16 +2,22 @@ package ese543.helpmi;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Map;
 
 import ese543.helpmi.core.MainPage;
+import ese543.helpmi.core.User;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = LoginActivity.class.getName();
+
     private EditText editTextUsername;
     private EditText editTextPassword;
     private TextView textViewErrorMsg;
@@ -29,14 +35,36 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view)
     {
-        String username = editTextUsername.getText().toString();
-        String password = editTextPassword.getText().toString();
-        if(isInputFieldsValid(username, password))
+        final String userName = editTextUsername.getText().toString();
+        final String password = editTextPassword.getText().toString();
+        if(isInputFieldsValid(userName, password))
         {
-            //TODO
             //connect to DB and check if user exists. If exists, populate the user field
-            Intent i = new Intent(this, MainPage.class);
-            startActivity(i);
+            final User user = new User(userName, password);
+            user.loginUser(new User.UserLogin() {
+                @Override
+                public void onCallback(boolean exists) {
+
+                    Log.d(TAG, "onCallback...userExists:" + exists);
+                    if(exists){
+                        Log.d(TAG, "onCallback...userExists if:" + exists);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Logged in as " + userName,Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        Intent i = new Intent(LoginActivity.this, MainPage.class);
+                        i.putExtra("userName", userName);
+                        startActivity(i);
+                    }
+                    else{
+                        Log.d(TAG, "onCallback...userExists else:" + exists);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Username or Password is incorrect",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+            });
+
+
+
         }
         else
         {

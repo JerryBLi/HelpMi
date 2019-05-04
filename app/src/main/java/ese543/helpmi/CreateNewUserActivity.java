@@ -26,7 +26,7 @@ import ese543.helpmi.R;
 import ese543.helpmi.core.User;
 
 public class CreateNewUserActivity extends AppCompatActivity {
-    private static final String TAG = CreateNewUserActivity.class.getClass().getSimpleName();
+    private static final String TAG = CreateNewUserActivity.class.getName();
 
     private EditText editTextUsername;
     private EditText editTextEmail;
@@ -36,7 +36,6 @@ public class CreateNewUserActivity extends AppCompatActivity {
     private EditText editTextPassword2;
     private TextView textViewError;
 
-    private boolean emailExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

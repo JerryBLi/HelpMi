@@ -27,7 +27,8 @@ public class User {
     private String lastName;
     private String password;
 
-    private boolean userExists;
+    private boolean exists;
+    private boolean login;
 
     public User(String userName, String email, String firstName, String lastName,  String password)
     {
@@ -38,20 +39,31 @@ public class User {
         this.password = password;
     }
 
+    public User(String email, String password)
+    {
+        this.email = email;
+        this.password = password;
+
+    }
+
     public interface UserAlreadyExists{
+        void onCallback(boolean exists);
+    }
+
+    public interface UserLogin{
         void onCallback(boolean exists);
     }
 
     public void checkUserExists(final UserAlreadyExists callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        userExists = false;
+        exists = false;
         CollectionReference collectionReferencere = db.collection("users");
         Query q1 = collectionReferencere.whereEqualTo("email", email);
         q1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                Log.d(TAG, "checkUserExists...onSuccess BEFORE userExists:" + userExists);
+                Log.d(TAG, "checkUserExists...onSuccess BEFORE userExists:" + exists);
                 for (DocumentSnapshot ds : queryDocumentSnapshots) {
                     String quserName, qemail;
                     quserName = ds.getString("userName");
@@ -59,15 +71,42 @@ public class User {
 
                     Log.d(TAG, ds.getId() + " => " + ds.getData().get("email"));
                     if (qemail.equals(email)) {
-                        userExists = true;
+                        exists = true;
                     }
                 }
 
-                Log.d(TAG, "checkUserExists...onSuccess AFTER userExists:" + userExists);
-                callback.onCallback(userExists);
+                Log.d(TAG, "checkUserExists...onSuccess AFTER userExists:" + exists);
+                callback.onCallback(exists);
             }
         });
     }
+
+    public void loginUser(final UserLogin callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        login = false;
+        CollectionReference collectionReferencere = db.collection("users");
+        Query q1 = collectionReferencere.whereEqualTo("email", email).whereEqualTo("password", password);
+        q1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                Log.d(TAG, "loginUser...onSuccess BEFORE login:" + login);
+                for (DocumentSnapshot ds : queryDocumentSnapshots) {
+                    String qemail, qpassword;
+                    qemail = ds.getString("email");
+                    qpassword = ds.getString("password");
+                    Log.d(TAG, ds.getId() + " => " + ds.getData().get("email")  + ", " + ds.getData().get("password"));
+                    if (qemail.equals(email) && qpassword.equals(password)) {
+                        login = true;
+                    }
+                }
+
+                Log.d(TAG, "checkUserExists...onSuccess AFTER login:" + login);
+                callback.onCallback(login);
+            }
+        });
+    }
+
     public void uploadToDatabase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Create a new user with a first and last name

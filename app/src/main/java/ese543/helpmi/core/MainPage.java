@@ -44,6 +44,8 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     private EditText editTextPayment;
     private EditText editTextDescription;
 
+    private String userName;
+
     final Calendar myCalendar = Calendar.getInstance();
 
     //This is for the navigation bar. This chooses which fragment to do stuff
@@ -78,6 +80,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        userName = getIntent().getExtras().get("userName").toString();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
