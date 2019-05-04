@@ -3,4 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.NewTaskFragment"/>
+    tools:context=".fragments.NewTaskFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNewTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Task Title"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextDateDeliver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Date of Delivery"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Location to Complete Task"
+            android:inputType="textPostalAddress" />
+
+        <CheckBox
+            android:id="@+id/checkBoxCurrentPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCurrentPositionCheckboxClicked"
+            android:text="Use Current Position" />
+
+        <EditText
+            android:id="@+id/editTextPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Payment Amount"
+            android:inputType="numberDecimal" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNegotiable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Negotiable" />
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="top|left"
+            android:hint="Task Description"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6" />
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="submitNewTask"
+            android:text="Submit" />
+    </LinearLayout>
+
+</FrameLayout>
