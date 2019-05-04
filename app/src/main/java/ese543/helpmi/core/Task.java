@@ -28,6 +28,7 @@ public class Task {
     private boolean isNegotiable;
     private boolean isComplete;
     private String description;
+    private String taskHash;
 
     public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
     {
@@ -41,9 +42,10 @@ public class Task {
         this.description = description;
         isComplete = false;
         userAssigned = "";
+        taskHash = "";
     }
 
-    public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned)
+    public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
     {
         this.userOwner = userOwner;
         this.title = title;
@@ -55,6 +57,7 @@ public class Task {
         this.description = description;
         this.isComplete = isComplete;
         this.userAssigned = userAssigned;
+        this.taskHash = taskHash;
     }
 
     public void uploadToDatabase()
@@ -116,16 +119,18 @@ public class Task {
     public boolean getIsNegotiable(){return isNegotiable;}
     public boolean getIsComplete(){return isComplete;}
     public String getDescription(){return description;}
+    public String getTaskNum(){return taskHash;}
 
     //Setters
-    public void userOwner(String userOwner){this.userOwner = userOwner;}
-    public void userAssigned(String userAssigned){this.userAssigned = userAssigned;}
-    public void title(String title){this.title = title;}
-    public void deliveryDate(Date deliveryDate){this.deliveryDate = deliveryDate;}
-    public void latitude(double latitude){this.latitude = latitude;}
-    public void longitude(double longitude){this.longitude = longitude;}
-    public void payment(double payment){this.payment=payment;}
-    public void isNegotiable(boolean isNegotiable){this.isNegotiable=isNegotiable;}
-    public void isComplete(boolean isComplete){this.isComplete = isComplete;}
-    public void description(String description){this.description=description;}
+    public void setUserOwner(String userOwner){this.userOwner = userOwner;}
+    public void setUserAssigned(String userAssigned){this.userAssigned = userAssigned;}
+    public void setTitle(String title){this.title = title;}
+    public void setDeliveryDate(Date deliveryDate){this.deliveryDate = deliveryDate;}
+    public void setLatitude(double latitude){this.latitude = latitude;}
+    public void setLongitude(double longitude){this.longitude = longitude;}
+    public void setPayment(double payment){this.payment=payment;}
+    public void setIsNegotiable(boolean isNegotiable){this.isNegotiable=isNegotiable;}
+    public void setIsComplete(boolean isComplete){this.isComplete = isComplete;}
+    public void setDescription(String description){this.description=description;}
+    public void setTaskNum(String taskNum){this.taskHash = taskHash;}
 }

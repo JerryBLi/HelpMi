@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ese543.helpmi.R;
+import ese543.helpmi.core.Task;
+import ese543.helpmi.fragments.dummy.AllTasks;
 import ese543.helpmi.fragments.dummy.DummyContent;
 import ese543.helpmi.fragments.dummy.DummyContent.DummyItem;
 
@@ -70,7 +72,7 @@ public class TaskFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(AllTasks.ITEMS, mListener));
         }
         return view;
     }
@@ -105,6 +107,6 @@ public class TaskFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Task item);
     }
 }

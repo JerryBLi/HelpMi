@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ese543.helpmi.R;
+import ese543.helpmi.core.Task;
 import ese543.helpmi.fragments.TaskFragment.OnListFragmentInteractionListener;
 import ese543.helpmi.fragments.dummy.DummyContent.DummyItem;
 
@@ -19,10 +20,10 @@ import java.util.List;
  */
 public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Task> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTaskRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,8 +38,9 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.title.setText(mValues.get(position).getTitle());
+        holder.postUser.setText(mValues.get(position).getUserOwner());
+        holder.price.setText(mValues.get(position).getPayment() + "");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +61,23 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView title;
+        public final TextView postUser;
+        public final TextView price;
+        public Task mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            title = (TextView) view.findViewById(R.id.item_title);
+            postUser = (TextView) view.findViewById(R.id.post_user);
+            price = (TextView) view.findViewById(R.id.payment_price);
+
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + title.getText() + "'";
         }
     }
 }

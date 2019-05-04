@@ -195,4 +195,10 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         return 15;
         //TODO
     }
+
+    @Override
+    public void onListFragmentInteraction(Task item) {
+
+        return;
+    }
 }
