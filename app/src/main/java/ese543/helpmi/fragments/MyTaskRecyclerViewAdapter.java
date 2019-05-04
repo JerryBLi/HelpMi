@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ese543.helpmi.R;
-import ese543.helpmi.core.Task;
+import ese543.helpmi.core.UserTask;
 import ese543.helpmi.fragments.TaskFragment.OnListFragmentInteractionListener;
 import ese543.helpmi.fragments.dummy.DummyContent.DummyItem;
 
@@ -20,10 +20,10 @@ import java.util.List;
  */
 public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Task> mValues;
+    private final List<UserTask> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener) {
+    public MyTaskRecyclerViewAdapter(List<UserTask> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -64,7 +64,7 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
         public final TextView title;
         public final TextView postUser;
         public final TextView price;
-        public Task mItem;
+        public UserTask mItem;
 
         public ViewHolder(View view) {
             super(view);

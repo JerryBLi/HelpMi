@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Task {
-    private static final String TAG = Task.class.getClass().getSimpleName();
+public class UserTask {
+    private static final String TAG = UserTask.class.getClass().getSimpleName();
     private String userOwner;
     private String userAssigned;
     private String title;
@@ -30,7 +30,7 @@ public class Task {
     private String description;
     private String taskHash;
 
-    public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
+    public UserTask(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
     {
         this.userOwner = userOwner;
         this.title = title;
@@ -45,7 +45,7 @@ public class Task {
         taskHash = "";
     }
 
-    public Task(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
+    public UserTask(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
     {
         this.userOwner = userOwner;
         this.title = title;

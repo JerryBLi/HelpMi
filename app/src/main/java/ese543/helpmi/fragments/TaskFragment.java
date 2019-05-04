@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ese543.helpmi.R;
-import ese543.helpmi.core.Task;
+import ese543.helpmi.core.UserTask;
 import ese543.helpmi.fragments.dummy.AllTasks;
 import ese543.helpmi.fragments.dummy.DummyContent;
 import ese543.helpmi.fragments.dummy.DummyContent.DummyItem;
@@ -107,6 +107,6 @@ public class TaskFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Task item);
+        void onListFragmentInteraction(UserTask item);
     }
 }

@@ -77,7 +77,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
         //TODO - message the poster
     }
 
-    private void populateFields(Task t)
+    private void populateFields(UserTask t)
     {
         if(t == null)
             return;

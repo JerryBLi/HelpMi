@@ -16,6 +16,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -75,6 +77,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -159,7 +162,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
 
-        Task task = new Task(owner,title,date,latitude,longitude,payment,isNegotiable,description);
+        UserTask task = new UserTask(owner,title,date,latitude,longitude,payment,isNegotiable,description);
         task.uploadToDatabase();
 
         //set to home after user creates new post
@@ -197,7 +200,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     }
 
     @Override
-    public void onListFragmentInteraction(Task item) {
+    public void onListFragmentInteraction(UserTask item) {
 
         return;
     }
