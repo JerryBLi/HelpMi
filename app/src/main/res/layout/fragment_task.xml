@@ -79,8 +79,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3.0"
-                android:ems="10"
-                android:inputType="date"
                 android:textAlignment="viewStart"
                 android:textSize="12sp"
                 android:textStyle="bold" />

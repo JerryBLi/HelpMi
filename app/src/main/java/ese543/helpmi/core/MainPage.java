@@ -1,6 +1,7 @@
 package ese543.helpmi.core;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,15 +12,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +33,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import ese543.helpmi.R;
+import ese543.helpmi.fragments.DatePickerFragment;
 import ese543.helpmi.fragments.MessagesFragment;
 import ese543.helpmi.fragments.NewTaskFragment;
 import ese543.helpmi.fragments.TaskFragment;
@@ -39,7 +46,7 @@ import ese543.helpmi.fragments.dummy.DummyContent;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainPage extends AppCompatActivity implements MessagesFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
+public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, MessagesFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
 
 
     private static final String TAG = MainPage.class.getName();
@@ -112,6 +119,24 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
 
         requestLocationPermission();
     }
+
+    public void openDatePicker(View v){
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(), "date picker");
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+
+        TextView textView = (TextView) findViewById(R.id.editTextDateDeliver);
+        textView.setText(currentDateString);
+    }
+
 
     public void openMap(View view) {
         Intent i = new Intent(this, MapsActivity.class);
@@ -216,6 +241,8 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
             editTextLocation.setEnabled(true);
     }
 
+
+
     public Date getDateFromInput(String s)
     {
         myCalendar.set(2019,5,4);
@@ -280,4 +307,5 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
         }
     }
+
 }

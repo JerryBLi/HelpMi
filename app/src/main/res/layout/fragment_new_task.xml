@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,69 +15,126 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTitle"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Task Title"
-                android:inputType="text" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextDateDeliver"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Date of Delivery"
-                android:inputType="text" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Location to Complete Task"
-                android:inputType="textPostalAddress" />
+                    <EditText
+                        android:id="@+id/editTextTitle"
+                        android:layout_weight="10.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Task Title"
+                        android:inputType="text" />
+                </TableRow>
 
-            <CheckBox
-                android:id="@+id/checkBoxCurrentPosition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="onCurrentPositionCheckboxClicked"
-                android:text="Use Current Position" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextPayment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Payment Amount"
-                android:inputType="numberDecimal" />
+                    <EditText
+                        android:id="@+id/editTextPayment"
+                        android:layout_weight="10.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Payment Amount"
+                        android:inputType="numberDecimal" />
+                </TableRow>
 
-            <CheckBox
-                android:id="@+id/checkBoxNegotiable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Negotiable" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editTextDescription"
-                style="@style/Widget.AppCompat.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="top|left"
-                android:hint="Task Description"
-                android:inputType="textMultiLine"
-                android:lines="8"
-                android:minLines="6" />
+                    <EditText
+                        android:id="@+id/editTextDateDeliver"
+                        android:layout_weight="8.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Date of Delivery"
+                        android:inputType="text" />
 
-            <Button
-                android:id="@+id/buttonSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="submitNewTask"
-                android:text="Submit" />
+                    <ImageButton
+                        android:id="@+id/buttonDateDeliverPicker"
+                        android:layout_weight="2.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="openDatePicker"
+                        android:src="@android:drawable/ic_menu_my_calendar" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editTextLocation"
+                        android:layout_weight="6.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Location to Complete Task"
+                        android:inputType="textPostalAddress" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxCurrentPosition"
+                        android:layout_weight="4.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:onClick="onCurrentPositionCheckboxClicked"
+                        android:text="Use Current Position" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <CheckBox
+                        android:id="@+id/checkBoxNegotiable"
+                        android:layout_weight="10.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Negotiable" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editTextDescription"
+                        style="@style/Widget.AppCompat.EditText"
+                        android:layout_weight="10.0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:gravity="top|left"
+                        android:hint="Task Description"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:minLines="6" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_weight="10.0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/buttonSubmit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="submitNewTask"
+                        android:text="Submit" />
+                </TableRow>
+
+            </TableLayout>
         </LinearLayout>
     </ScrollView>
 
