@@ -67,6 +67,9 @@ public class DisplayTaskActivity extends AppCompatActivity {
     public void onClickShowLocation(View view)
     {
         //TODO - show the location of task on map
+        Intent i = new Intent(this, MapsActivity.class);
+        i.putExtra("TASK_TITLE", editTextTitleDisplayTask.getText().toString());
+        startActivity(i);
     }
 
     public void onClickTaskComplete(View view)

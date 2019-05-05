@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
@@ -35,10 +36,12 @@ import ese543.helpmi.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    String newString;
     private static final String TAG = User.class.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -73,6 +76,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                newString= null;
+            } else {
+                newString= extras.getString("TASK_TITLE");
+                onShowLocation();
+            }
+        } else {
+            newString= (String) savedInstanceState.getSerializable("TASK_TITLE");
+        }
     }
 
     public void onMapSearch(View view) {
@@ -127,6 +142,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         goToLocation(latitude, longitude, 15);
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
+    }
+
+    public void onShowLocation()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("tasks");
+        Query q1 = collectionReference.whereEqualTo("title", newString);
+        q1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                for (DocumentSnapshot ds : queryDocumentSnapshots) {
+                    LatLng latLng = new LatLng(ds.getDouble("latitude"), ds.getDouble("longitude"));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                }
+            }
+
+        });
     }
 
     public void goToLocation(double latitude, double longitude, float zoom){
