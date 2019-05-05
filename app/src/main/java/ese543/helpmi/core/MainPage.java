@@ -1,5 +1,6 @@
 package ese543.helpmi.core;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 
@@ -27,11 +29,14 @@ import ese543.helpmi.fragments.MessagesFragment;
 import ese543.helpmi.fragments.NewTaskFragment;
 import ese543.helpmi.fragments.TaskFragment;
 import ese543.helpmi.fragments.dummy.DummyContent;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainPage extends AppCompatActivity implements MessagesFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
 
 
     private static final String TAG = MainPage.class.getName();
+    private final int REQUEST_LOCATION_PERMISSION = 1;
 
     private ActionBar toolbar;
     private Button buttonShowMaps;
@@ -95,10 +100,11 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         toolbar = getSupportActionBar();
         toolbar.setTitle("Task Map");
         loadFragment(new TaskFragment());
+
+        requestLocationPermission();
     }
 
     public void openMap(View view) {
-        TaskFragment.printUserTaskList();
         Intent i = new Intent(this, MapsActivity.class);
         startActivity(i);
     }
@@ -212,5 +218,25 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     public void onListFragmentInteraction(UserTask item) {
 
         return;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(REQUEST_LOCATION_PERMISSION)
+    public void requestLocationPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if(EasyPermissions.hasPermissions(this, perms)) {
+            //Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
+        }
     }
 }

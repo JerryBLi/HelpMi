@@ -47,7 +47,7 @@ public class TaskFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MyTaskRecyclerViewAdapter adapter;
-    private static ArrayList<UserTask> userTaskList = new ArrayList<>();
+    private ArrayList<UserTask> userTaskList = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -139,7 +139,7 @@ public class TaskFragment extends Fragment {
         return view;
     }
 
-    public static void printUserTaskList(){
+    public void printUserTaskList(){
 
         Log.d(TAG, "PRINTING USER TASK LIST:");
         for(UserTask task: userTaskList){

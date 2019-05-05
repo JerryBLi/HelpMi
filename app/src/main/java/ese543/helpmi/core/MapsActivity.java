@@ -73,13 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-
-//        for(int i=0;i<latitudeCoord.size();i++)
-//        {
-//            LatLng latLng = new LatLng(latitudeCoord.get(i), longitudeCoord.get(i));
-//            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-//        }
-
     }
 
     public void onMapSearch(View view) {
@@ -112,6 +105,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
 
         getCurrentLocation();
+
     }
 
     //Get current longitude and latitue
