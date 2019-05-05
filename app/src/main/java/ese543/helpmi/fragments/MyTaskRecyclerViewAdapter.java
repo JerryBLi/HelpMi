@@ -39,8 +39,9 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.title.setText(mValues.get(position).getTitle());
-        holder.postUser.setText(mValues.get(position).getUserOwner());
-        holder.price.setText(mValues.get(position).getPayment() + "");
+        holder.owner.setText(mValues.get(position).getUserOwner());
+        holder.payment.setText("$"+ mValues.get(position).getPayment() + "");
+        holder.description.setText(mValues.get(position).getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,17 +63,20 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView title;
-        public final TextView postUser;
-        public final TextView price;
+        public final TextView owner;
+        public final TextView payment;
+        public final TextView description;
+        public final TextView userAssigned;
         public UserTask mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            title = (TextView) view.findViewById(R.id.item_title);
-            postUser = (TextView) view.findViewById(R.id.post_user);
-            price = (TextView) view.findViewById(R.id.payment_price);
-
+            title = (TextView) view.findViewById(R.id.task_title);
+            owner = (TextView) view.findViewById(R.id.task_owner);
+            payment = (TextView) view.findViewById(R.id.task_payment);
+            description = (TextView) view.findViewById(R.id.task_description);
+            userAssigned = (TextView) view.findViewById(R.id.task_userAssigned);
         }
 
         @Override
