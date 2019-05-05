@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,9 @@ import ese543.helpmi.fragments.TaskFragment;
 import ese543.helpmi.fragments.dummy.DummyContent;
 
 public class MainPage extends AppCompatActivity implements MessagesFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
+
+
+    private static final String TAG = MainPage.class.getName();
 
     private ActionBar toolbar;
     private Button buttonShowMaps;
@@ -82,6 +86,8 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
 
         userName = getIntent().getExtras().get("userName").toString();
 
+        Log.d(TAG, "onCreate..userName: " + userName);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -92,6 +98,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     }
 
     public void openMap(View view) {
+        TaskFragment.printUserTaskList();
         Intent i = new Intent(this, MapsActivity.class);
         startActivity(i);
     }
@@ -150,7 +157,6 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         CheckBox checkBoxNegotiable = findViewById(R.id.checkBoxNegotiable);
         EditText editTextDescription = findViewById(R.id.editTextDescription);
 
-        String owner = "TestUser";
         String title = editTextTitle.getText().toString();
         Date date = getDateFromInput(editTextDateDeliver.getText().toString());
         double latitude = getLatitudeFromInput(""); //TODO
@@ -165,7 +171,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
 
-        UserTask task = new UserTask(owner,title,date,latitude,longitude,payment,isNegotiable,description);
+        UserTask task = new UserTask(userName,title,date,latitude,longitude,payment,isNegotiable,description);
         task.uploadToDatabase();
 
         //set to home after user creates new post

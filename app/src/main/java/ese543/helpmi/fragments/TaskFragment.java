@@ -6,9 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import ese543.helpmi.R;
 import ese543.helpmi.core.UserTask;
@@ -16,7 +25,11 @@ import ese543.helpmi.fragments.dummy.AllTasks;
 import ese543.helpmi.fragments.dummy.DummyContent;
 import ese543.helpmi.fragments.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * A fragment representing a list of Items.
@@ -26,11 +39,15 @@ import java.util.List;
  */
 public class TaskFragment extends Fragment {
 
+    private static final String TAG = TaskFragment.class.getName();
+
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyTaskRecyclerViewAdapter adapter;
+    private static ArrayList<UserTask> userTaskList = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -72,9 +89,64 @@ public class TaskFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(AllTasks.ITEMS, mListener));
+
+            adapter = new MyTaskRecyclerViewAdapter(userTaskList, mListener);
+            recyclerView.setAdapter(adapter);
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("tasks");
+            collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+
+                    for (QueryDocumentSnapshot qds : querySnapshot) {
+
+                        // get all Task fields
+                        String qowner, qtitle, qdescription, quserAssigned;
+                        Date qdeliveryDate;
+                        double qlatitude,  qlongitude, qpayment;
+                        boolean qisComplete, qisNegotiable;
+
+                        qowner = qds.getString("owner");
+                        qtitle = qds.getString("title");
+                        qdescription = qds.getString("description");
+                        quserAssigned = qds.getString("userAssigned");
+                        qisComplete = qds.getBoolean("isComplete");
+                        qisNegotiable = qds.getBoolean("isNegotiable");
+
+                        qlatitude = qds.getDouble("latitude");
+                        qlongitude = qds.getDouble("longitude");
+                        qpayment = qds.getDouble("payment");
+                        qdeliveryDate = qds.getDate("deliveryDate");
+                        Log.d(TAG, qds.getId() + " => " + qds.getData());
+
+                        // create Task
+                        UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
+
+                        // add to list
+                        userTaskList.add(task);
+                    }
+                    // update adapter
+                    adapter.notifyDataSetChanged();
+                }
+
+            });
         }
         return view;
+    }
+
+    public static void printUserTaskList(){
+
+        Log.d(TAG, "PRINTING USER TASK LIST:");
+        for(UserTask task: userTaskList){
+
+            Log.d(TAG, task.getTitle() + " " + task.getUserOwner() );
+        }
+
     }
 
 
