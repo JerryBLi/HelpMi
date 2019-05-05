@@ -42,6 +42,8 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
         holder.owner.setText(mValues.get(position).getUserOwner());
         holder.payment.setText("$"+ mValues.get(position).getPayment() + "");
         holder.description.setText(mValues.get(position).getDescription());
+        holder.datePosted.setText(mValues.get(position).getDatePosted().toString());
+        holder.deliveryDate.setText(mValues.get(position).getDeliveryDate().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +69,8 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
         public final TextView payment;
         public final TextView description;
         public final TextView userAssigned;
+        public final TextView datePosted;
+        public final TextView deliveryDate;
         public UserTask mItem;
 
         public ViewHolder(View view) {
@@ -77,6 +81,8 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
             payment = (TextView) view.findViewById(R.id.task_payment);
             description = (TextView) view.findViewById(R.id.task_description);
             userAssigned = (TextView) view.findViewById(R.id.task_userAssigned);
+            datePosted = view.findViewById(R.id.task_datePosted);
+            deliveryDate = view.findViewById(R.id.task_deliveryDate);
         }
 
         @Override

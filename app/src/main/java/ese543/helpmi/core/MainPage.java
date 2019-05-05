@@ -1,11 +1,16 @@
 package ese543.helpmi.core;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -19,6 +24,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
 
 import java.util.Calendar;
@@ -147,17 +154,30 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     /* METHOD TO CREATE NEW TASK */
     public void createNewTask()
     {
-
+        double latitude;
+        double longitude;
         EditText editTextTitle = findViewById(R.id.editTextTitle);
         EditText editTextDateDeliver = findViewById(R.id.editTextDateDeliver);
         CheckBox checkBoxCurrentPosition = findViewById(R.id.checkBoxCurrentPosition);
         if(checkBoxCurrentPosition.isChecked())
         {
-
+            LatLng currentLocation = getCurrentLocation();
+            if(currentLocation != null)
+            {
+                latitude = currentLocation.latitude;
+                longitude = currentLocation.longitude;
+            }
+            else
+            {
+                latitude = 0; //default if can't find position
+                longitude = 0; //defaut if can't find position
+            }
         }
         else
         {
             EditText editTextLocation = findViewById(R.id.editTextLocation);
+            latitude = getLatitudeFromInput(""); //TODO
+            longitude = getLongitudeFromInput(""); //TODO
         }
         EditText editTextPayment = findViewById(R.id.editTextPayment);
         CheckBox checkBoxNegotiable = findViewById(R.id.checkBoxNegotiable);
@@ -165,8 +185,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
 
         String title = editTextTitle.getText().toString();
         Date date = getDateFromInput(editTextDateDeliver.getText().toString());
-        double latitude = getLatitudeFromInput(""); //TODO
-        double longitude = getLongitudeFromInput(""); //TODO
+
         double payment = 0;
         try{
             payment = Double.parseDouble(editTextPayment.getText().toString());
@@ -177,7 +196,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
 
-        UserTask task = new UserTask(userName,title,date,latitude,longitude,payment,isNegotiable,description);
+        UserTask task = new UserTask(userName,title,new Date(),date,latitude,longitude,payment,isNegotiable,description);
         task.uploadToDatabase();
 
         //set to home after user creates new post
@@ -212,6 +231,25 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     {
         return 15;
         //TODO
+    }
+
+    public LatLng getCurrentLocation(){
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return null;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location == null) {
+
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+
+        return latLng;
+
     }
 
     @Override

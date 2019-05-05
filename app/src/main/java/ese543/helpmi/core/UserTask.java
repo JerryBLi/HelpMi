@@ -23,6 +23,7 @@ public class UserTask implements Parcelable {
     private String userOwner;
     private String userAssigned;
     private String title;
+    private Date datePosted;
     private Date deliveryDate;
     private double latitude;
     private double longitude;
@@ -32,10 +33,11 @@ public class UserTask implements Parcelable {
     private String description;
     private String taskHash;
 
-    public UserTask(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
+    public UserTask(String userOwner, String title, Date datePosted,Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
     {
         this.userOwner = userOwner;
         this.title = title;
+        this.datePosted = datePosted;
         this.deliveryDate = deliveryDate;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -47,10 +49,11 @@ public class UserTask implements Parcelable {
         taskHash = "";
     }
 
-    public UserTask(String userOwner, String title, Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
+    public UserTask(String userOwner, String title, Date deliveryDate, Date datePosted, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
     {
         this.userOwner = userOwner;
         this.title = title;
+        this.datePosted = datePosted;
         this.deliveryDate = deliveryDate;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -66,6 +69,7 @@ public class UserTask implements Parcelable {
         userOwner = in.readString();
         userAssigned = in.readString();
         title = in.readString();
+        datePosted = new Date(in.readLong());
         deliveryDate = new Date(in.readLong());
         latitude = in.readDouble();
         longitude = in.readDouble();
@@ -95,6 +99,7 @@ public class UserTask implements Parcelable {
         Map<String, Object> user = new HashMap<>();
         user.put("owner",userOwner);
         user.put("title",title);
+        user.put("datePosted",datePosted);
         user.put("deliveryDate", deliveryDate);
         user.put("latitude", latitude);
         user.put("longitude", longitude);
@@ -140,6 +145,7 @@ public class UserTask implements Parcelable {
     public String getUserOwner(){return userOwner;}
     public String getUserAssigned(){return userAssigned;}
     public String getTitle(){ return title;}
+    public Date getDatePosted(){return datePosted;}
     public Date getDeliveryDate(){return deliveryDate;}
     public double getLatitude(){return latitude;}
     public double getLongitude(){return longitude;}
@@ -153,6 +159,7 @@ public class UserTask implements Parcelable {
     public void setUserOwner(String userOwner){this.userOwner = userOwner;}
     public void setUserAssigned(String userAssigned){this.userAssigned = userAssigned;}
     public void setTitle(String title){this.title = title;}
+    public void setDatePosted(Date datePosted){this.datePosted = datePosted;}
     public void setDeliveryDate(Date deliveryDate){this.deliveryDate = deliveryDate;}
     public void setLatitude(double latitude){this.latitude = latitude;}
     public void setLongitude(double longitude){this.longitude = longitude;}
@@ -172,6 +179,7 @@ public class UserTask implements Parcelable {
         parcel.writeString(userOwner);
         parcel.writeString(userAssigned);
         parcel.writeString(title);
+        parcel.writeLong(datePosted.getTime());
         parcel.writeLong(deliveryDate.getTime());
         parcel.writeDouble(latitude);
         parcel.writeDouble(longitude);

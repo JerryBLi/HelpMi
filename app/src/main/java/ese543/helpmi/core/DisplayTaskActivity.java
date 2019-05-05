@@ -14,6 +14,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
     private EditText editTextTitleDisplayTask;
     private EditText editTextTaskCreatorDisplayTask;
+    private EditText editTextDatePostedDisplayTask;
     private EditText editTextDateOfDeliveryDisplayTask;
     private EditText editTextLocationDisplayTask;
     private EditText editTextPaymentDisplayTask;
@@ -21,6 +22,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
     private EditText editTextTaskDescriptionDisplayTask;
     private CheckBox checkBoxIsTaskCompleteDisplayTask;
     private EditText editTextTaskAssignedToDisplayTask;
+
 
     private Button buttonShowLocationDisplayTask;
     private Button buttonTaskCompleteDisplayTask;
@@ -34,6 +36,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
         //Initialize all the components
         editTextTitleDisplayTask = findViewById(R.id.editTextTitleDisplayTask);
         editTextTaskCreatorDisplayTask = findViewById(R.id.editTextTaskCreatorDisplayTask);
+        editTextDatePostedDisplayTask= findViewById(R.id.editTextDatePostedDisplayTask);
         editTextDateOfDeliveryDisplayTask = findViewById(R.id.editTextDateOfDeliveryDisplayTask);
         editTextLocationDisplayTask = findViewById(R.id.editTextLocationDisplayTask);
         editTextPaymentDisplayTask = findViewById(R.id.editTextPaymentDisplayTask);
@@ -88,6 +91,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         editTextTitleDisplayTask.setText(t.getTitle());
         editTextTaskCreatorDisplayTask.setText(t.getUserOwner());
+        editTextDatePostedDisplayTask.setText(t.getDatePosted().toString());
         editTextDateOfDeliveryDisplayTask.setText(t.getDeliveryDate().toString());
         editTextLocationDisplayTask.setText(t.getLongitude()+","+t.getLatitude());
         editTextPaymentDisplayTask.setText(t.getPayment()+"");

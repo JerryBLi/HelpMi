@@ -34,7 +34,7 @@ public class AllTasks {
     private static UserTask createDummyItem(int position)
     {
 
-        return new ese543.helpmi.core.UserTask("TestUser" + position, "Title" + position, new Date(), 10, 15, Math.random() * 100, (Math.random() > 0.5 ? true : false), "Test Description" + position);
+        return new ese543.helpmi.core.UserTask("TestUser" + position, "Title" + position, new Date(),new Date(), 10, 15, Math.random() * 100, (Math.random() > 0.5 ? true : false), "Test Description" + position);
     }
 
     private static void RetreiveItemsFromDB()

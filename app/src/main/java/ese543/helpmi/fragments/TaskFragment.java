@@ -107,7 +107,7 @@ public class TaskFragment extends Fragment {
 
                         // get all Task fields
                         String qowner, qtitle, qdescription, quserAssigned;
-                        Date qdeliveryDate;
+                        Date qdeliveryDate, qDatePosted;
                         double qlatitude,  qlongitude, qpayment;
                         boolean qisComplete, qisNegotiable;
 
@@ -122,10 +122,11 @@ public class TaskFragment extends Fragment {
                         qlongitude = qds.getDouble("longitude");
                         qpayment = qds.getDouble("payment");
                         qdeliveryDate = qds.getDate("deliveryDate");
+                        qDatePosted = qds.getDate("datePosted");
                         Log.d(TAG, qds.getId() + " => " + qds.getData());
 
                         // create Task
-                        UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
+                        UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
 
                         // add to list
                         userTaskList.add(task);
