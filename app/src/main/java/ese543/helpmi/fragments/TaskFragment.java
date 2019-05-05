@@ -102,7 +102,7 @@ public class TaskFragment extends Fragment {
                         Log.w(TAG, "Listen failed.", e);
                         return;
                     }
-
+                    userTaskList.clear();
                     for (QueryDocumentSnapshot qds : querySnapshot) {
 
                         // get all Task fields
