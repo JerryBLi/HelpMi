@@ -1,19 +1,49 @@
 package ese543.helpmi.core;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import ese543.helpmi.R;
+import ese543.helpmi.fragments.UserListAdapter;
 
 public class DisplayTaskActivity extends AppCompatActivity {
 
+    private static final String TAG = DisplayTaskActivity.class.getName();
     private User user;
-
+    private UserTask t;
     private EditText editTextTitleDisplayTask;
     private EditText editTextTaskCreatorDisplayTask;
     private EditText editTextDatePostedDisplayTask;
@@ -25,10 +55,18 @@ public class DisplayTaskActivity extends AppCompatActivity {
     private CheckBox checkBoxIsTaskCompleteDisplayTask;
     private EditText editTextTaskAssignedToDisplayTask;
 
+    private TextView textViewInterestedUsers;
 
-    private Button buttonShowLocationDisplayTask;
+    private ImageButton buttonShowLocationDisplayTask;
+    private Button buttonInterested;
     private Button buttonTaskCompleteDisplayTask;
     private Button buttonMessagePosterDisplayTask;
+
+
+    //private ArrayList<User> interestedUsers = new ArrayList<>();
+    private ArrayList<String> interestedUsers = new ArrayList<>();
+    private ListView listViewInterestedUsers;
+    private UserListAdapter userListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +88,28 @@ public class DisplayTaskActivity extends AppCompatActivity {
         buttonShowLocationDisplayTask = findViewById(R.id.buttonShowLocationDisplayTask);
         buttonTaskCompleteDisplayTask = findViewById(R.id.buttonTaskCompleteDisplayTask);
         buttonMessagePosterDisplayTask = findViewById(R.id.buttonMessagePosterDisplayTask);
+        buttonInterested = findViewById(R.id.buttonInterested);
+        textViewInterestedUsers = findViewById(R.id.textViewInterestedUsers);
+        listViewInterestedUsers = findViewById(R.id.listViewInterestedUsers);
 
 
         buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
         buttonMessagePosterDisplayTask.setVisibility(View.GONE);
-
+        buttonInterested.setVisibility(View.GONE);
+        listViewInterestedUsers.setVisibility(View.GONE);
+        textViewInterestedUsers.setVisibility(View.GONE);
         Intent i = getIntent();
-        UserTask t = (UserTask)i.getParcelableExtra("task");
+
+        t = (UserTask)i.getParcelableExtra("task");
+        Log.d(TAG, "taskID: " + t.getTaskID() + " title: " + t.getTitle());
+
+
         user = (User)i.getParcelableExtra("currentUser");
+        Log.d(TAG, "userID: " + user.getUserID() + " userName: " + user.getUserName());
 
 
         //TODO - populate task
-        populateFields(t);
+        populateFields();
     }
 
     public void onClickShowLocation(View view)
@@ -82,7 +130,23 @@ public class DisplayTaskActivity extends AppCompatActivity {
         //TODO - message the poster
     }
 
-    private void populateFields(UserTask t)
+    public void onClickInterested(View view)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference  tasksRef = db.collection("tasks").document(t.getTaskID());
+        // Add a new document with a generated ID
+        Log.d(TAG, "onClickInterested..." + t.getTaskID() + " " + t.getTitle() + " " + t.getUserOwner() );
+        Log.d(TAG, "onClickInterested..."+ user.getUserName() + " " + user.getEmail() + " " +user.getFirstName() + " " + user.getLastName());
+        User currentUser = new User(user.getUserName(), user.getEmail(), user.getFirstName(), user.getLastName());
+        currentUser.setUserID(user.getUserID());
+
+        tasksRef.update("interestedUsers", FieldValue.arrayUnion(currentUser.getUserName()));
+
+        Toast toast = Toast.makeText(getApplicationContext(), t.getUserOwner() + " has been notified of your interest!",Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    private void populateFields()
     {
         if(t == null)
             return;
@@ -98,19 +162,64 @@ public class DisplayTaskActivity extends AppCompatActivity {
         checkBoxIsTaskCompleteDisplayTask.setChecked(t.getIsComplete());
         editTextTaskAssignedToDisplayTask.setText(t.getUserAssigned());
 
+        userListAdapter = new UserListAdapter(DisplayTaskActivity.this, interestedUsers);
+        listViewInterestedUsers.setAdapter(userListAdapter);
+
         String currentUser = user.getUserName();
         String poster = t.getUserOwner();
         //If the current user is the poster, he can mark the task complete
         //otherwise, it's someone else so they can message the poster
         if(currentUser.equals(poster))
         {
-            buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
+
             buttonMessagePosterDisplayTask.setVisibility(View.GONE);
+            buttonInterested.setVisibility(View.GONE);
+            buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
+            textViewInterestedUsers.setVisibility(View.VISIBLE);
+            listViewInterestedUsers.setVisibility(View.VISIBLE);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference tasksRef = db.collection("tasks");
+
+            tasksRef.document(t.getTaskID());
+
+
+            tasksRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    interestedUsers.clear();
+                    for (QueryDocumentSnapshot qds : querySnapshot) {
+
+                        Log.d(TAG, "onEventListener...id: " + qds.getId() + " title: " + qds.getString("title") + " " + t.getUserOwner() );
+                        // only the current task
+                        if (qds.getId().equals(t.getTaskID())) {
+
+                            // iterate through this task's interestedUsers list and add to ArrayList
+                            ArrayList<String> taskList = (ArrayList<String>) qds.get("interestedUsers");
+                            for (String interestedUser : taskList) {
+                                interestedUsers.add(interestedUser);
+                            }
+                        }
+                        // update adapter
+                        userListAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+
+
         }
-        else
+        else // not the user that posted
         {
-            buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
+            buttonInterested.setVisibility(View.VISIBLE);
             buttonMessagePosterDisplayTask.setVisibility(View.VISIBLE);
+            buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
+            textViewInterestedUsers.setVisibility(View.GONE);
+            listViewInterestedUsers.setVisibility(View.GONE);
         }
     }
+
+
 }

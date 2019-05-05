@@ -67,7 +67,6 @@ public class CreateNewUserActivity extends AppCompatActivity {
 
             // Create User
             final User user = new User(userName, email, firstName, lastName, password);
-
             // Upload User to database
             user.checkUserExists(new User.UserAlreadyExists() {
                 @Override

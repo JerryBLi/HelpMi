@@ -69,7 +69,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
 
     private String userName;
     private User user;
-
+    private UserTask task;
     final Calendar myCalendar = Calendar.getInstance();
 
     //This is for the navigation bar. This chooses which fragment to do stuff
@@ -107,7 +107,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         userName = getIntent().getExtras().get("userName").toString();
         user = (User)getIntent().getParcelableExtra("user");
 
-        Log.d(TAG, "onCreate..userName: " + userName);
+        Log.d(TAG, "onCreate..userID: " + user.getUserID() + "userName: " + userName);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -209,7 +209,8 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         EditText editTextDescription = findViewById(R.id.editTextDescription);
 
         String title = editTextTitle.getText().toString();
-        Date date = getDateFromInput(editTextDateDeliver.getText().toString());
+        //Date date = getDateFromInput(editTextDateDeliver.getText().toString());
+        Date deliverDate = getDateFromInput(editTextDateDeliver.getText().toString());
 
         double payment = 0;
         try{
@@ -221,9 +222,13 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
 
-        UserTask task = new UserTask(user.getUserName(),title,new Date(),date,latitude,longitude,payment,isNegotiable,description);
-        task.uploadToDatabase();
+        task = new UserTask(user.getUserName(),title,new Date(),deliverDate,latitude,longitude,payment,isNegotiable,description);
 
+        task.uploadToDatabase();
+        Toast toast = Toast.makeText(this, "Successfully added task!",Toast.LENGTH_SHORT);
+        toast.show();
+
+        Log.d(TAG, task.getTaskID() + " " + task.getTitle() + " " + task.getUserOwner() );
         //set to home after user creates new post
         BottomNavigationView bottomNavigationView;
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
@@ -280,10 +285,15 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
     }
 
     @Override
-    public void onListFragmentInteraction(UserTask item) {
+    public void onListFragmentInteraction(UserTask task) {
         Intent i = new Intent(this,DisplayTaskActivity.class);
-        i.putExtra("task",item);
+
         i.putExtra("currentUser",user);
+        i.putExtra("task",task);
+
+        Log.d(TAG, "onListFragmentInteraction..." + task.getTaskID() + " " + task.getTitle() + " " + task.getUserOwner());
+        Log.d(TAG, "onListFragmentInteraction..." + user.getUserID() + " " + user.getUserName() + " " + user.getEmail());
+
         startActivity(i);
         return;
     }

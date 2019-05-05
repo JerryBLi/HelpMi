@@ -22,7 +22,8 @@ import java.util.Map;
 
 public class User  implements Parcelable {
 
-    private static final String TAG = User.class.getClass().getSimpleName();
+    private static final String TAG = User.class.getName();
+    private String userID;
     private String userName;
     private String email;
     private String firstName;
@@ -41,6 +42,14 @@ public class User  implements Parcelable {
         this.password = password;
     }
 
+    public User(String userName, String email, String firstName, String lastName)
+    {
+        this.userName = userName;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public User(String email, String password)
     {
         this.email = email;
@@ -49,6 +58,7 @@ public class User  implements Parcelable {
     }
 
     protected User(Parcel in) {
+        userID = in.readString();
         userName = in.readString();
         email = in.readString();
         firstName = in.readString();
@@ -79,6 +89,7 @@ public class User  implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userID);
         parcel.writeString(userName);
         parcel.writeString(email);
         parcel.writeString(firstName);
@@ -140,6 +151,7 @@ public class User  implements Parcelable {
                     Log.d(TAG, ds.getId() + " => " + ds.getData().get("email")  + ", " + ds.getData().get("password"));
                     if (qemail.equals(email) && qpassword.equals(password)) {
                         login = true;
+                        userID = ds.getId();
                         userName = ds.getString("userName");
                         firstName = ds.getString("firstName");
                         lastName = ds.getString("lastName");
@@ -155,6 +167,8 @@ public class User  implements Parcelable {
 
     public void uploadToDatabase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("users").document();
+        userID = ref.getId();
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("userName", userName);
@@ -162,24 +176,18 @@ public class User  implements Parcelable {
         user.put("firstName", firstName);
         user.put("lastName", lastName);
         user.put("password", password);
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+        db.collection("users").document(userID).set(user);
 
     }
 
+    public String getUserID(){return userID;};
     public String getUserName(){return userName;}
+    public String getEmail(){return email;}
+    public String getFirstName(){return firstName;}
+    public String getLastName(){return lastName;}
+
+    public void setUserID(String userID){this.userID = userID;}
+
 }
 
 

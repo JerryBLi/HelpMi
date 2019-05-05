@@ -106,11 +106,13 @@ public class TaskFragment extends Fragment {
                     for (QueryDocumentSnapshot qds : querySnapshot) {
 
                         // get all Task fields
-                        String qowner, qtitle, qdescription, quserAssigned;
+                        String qtaskID, qowner, qtitle, qdescription, quserAssigned;
                         Date qdeliveryDate, qDatePosted;
                         double qlatitude,  qlongitude, qpayment;
                         boolean qisComplete, qisNegotiable;
 
+
+                        qtaskID= qds.getId();
                         qowner = qds.getString("owner");
                         qtitle = qds.getString("title");
                         qdescription = qds.getString("description");
@@ -123,11 +125,10 @@ public class TaskFragment extends Fragment {
                         qpayment = qds.getDouble("payment");
                         qdeliveryDate = qds.getDate("deliveryDate");
                         qDatePosted = qds.getDate("datePosted");
-                        Log.d(TAG, qds.getId() + " => " + qds.getData());
-
+                        //Log.d(TAG, qds.getId() + " => " + qds.getData());
                         // create Task
                         UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
-
+                        task.setTaskID(qtaskID);
                         // add to list
                         userTaskList.add(task);
                     }

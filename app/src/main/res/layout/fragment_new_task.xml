@@ -53,9 +53,9 @@
 
                     <EditText
                         android:id="@+id/editTextDateDeliver"
-                        android:layout_weight="8.0"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="8.0"
                         android:ems="10"
                         android:hint="Date of Delivery"
                         android:inputType="text" />
