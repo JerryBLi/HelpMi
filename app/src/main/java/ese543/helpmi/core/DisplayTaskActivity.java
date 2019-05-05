@@ -12,6 +12,8 @@ import ese543.helpmi.R;
 
 public class DisplayTaskActivity extends AppCompatActivity {
 
+    private User user;
+
     private EditText editTextTitleDisplayTask;
     private EditText editTextTaskCreatorDisplayTask;
     private EditText editTextDatePostedDisplayTask;
@@ -49,22 +51,15 @@ public class DisplayTaskActivity extends AppCompatActivity {
         buttonTaskCompleteDisplayTask = findViewById(R.id.buttonTaskCompleteDisplayTask);
         buttonMessagePosterDisplayTask = findViewById(R.id.buttonMessagePosterDisplayTask);
 
-        //If the current user is the poster, he can mark the task complete
-        //otherwise, it's someone else so they can message the poster
-        int currentUser = 1;
-        int poster = 1;
-        if(currentUser == poster /* TODO */)
-        {
-            buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
-            buttonMessagePosterDisplayTask.setVisibility(View.GONE);
-        }
-        else
-        {
-            buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
-            buttonMessagePosterDisplayTask.setVisibility(View.VISIBLE);
-        }
+
+        buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
+        buttonMessagePosterDisplayTask.setVisibility(View.GONE);
+
         Intent i = getIntent();
         UserTask t = (UserTask)i.getParcelableExtra("task");
+        user = (User)i.getParcelableExtra("currentUser");
+
+
         //TODO - populate task
         populateFields(t);
     }
@@ -99,5 +94,20 @@ public class DisplayTaskActivity extends AppCompatActivity {
         editTextTaskDescriptionDisplayTask.setText(t.getDescription());
         checkBoxIsTaskCompleteDisplayTask.setChecked(t.getIsComplete());
         editTextTaskAssignedToDisplayTask.setText(t.getUserAssigned());
+
+        String currentUser = user.getUserName();
+        String poster = t.getUserOwner();
+        //If the current user is the poster, he can mark the task complete
+        //otherwise, it's someone else so they can message the poster
+        if(currentUser.equals(poster))
+        {
+            buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
+            buttonMessagePosterDisplayTask.setVisibility(View.GONE);
+        }
+        else
+        {
+            buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
+            buttonMessagePosterDisplayTask.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -61,6 +61,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     private EditText editTextDescription;
 
     private String userName;
+    private User user;
 
     final Calendar myCalendar = Calendar.getInstance();
 
@@ -97,6 +98,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         setContentView(R.layout.activity_main_page);
 
         userName = getIntent().getExtras().get("userName").toString();
+        user = (User)getIntent().getParcelableExtra("user");
 
         Log.d(TAG, "onCreate..userName: " + userName);
 
@@ -127,8 +129,6 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     public void submitNewTask(View view)
     {
         createNewTask();
-        TextView tv = findViewById(R.id.textViewNewTask);
-        tv.setText("Hello!!!!");
     }
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -196,7 +196,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
 
-        UserTask task = new UserTask(userName,title,new Date(),date,latitude,longitude,payment,isNegotiable,description);
+        UserTask task = new UserTask(user.getUserName(),title,new Date(),date,latitude,longitude,payment,isNegotiable,description);
         task.uploadToDatabase();
 
         //set to home after user creates new post
@@ -256,6 +256,7 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
     public void onListFragmentInteraction(UserTask item) {
         Intent i = new Intent(this,DisplayTaskActivity.class);
         i.putExtra("task",item);
+        i.putExtra("currentUser",user);
         startActivity(i);
         return;
     }

@@ -1,5 +1,7 @@
 package ese543.helpmi.core;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -18,7 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User  implements Parcelable {
 
     private static final String TAG = User.class.getClass().getSimpleName();
     private String userName;
@@ -44,6 +46,46 @@ public class User {
         this.email = email;
         this.password = password;
 
+    }
+
+    protected User(Parcel in) {
+        userName = in.readString();
+        email = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        password = in.readString();
+        exists = in.readByte() != 0;
+        login = in.readByte() != 0;
+    }
+
+
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userName);
+        parcel.writeString(email);
+        parcel.writeString(firstName);
+        parcel.writeString(lastName);
+        parcel.writeString(password);
+        parcel.writeByte((byte) (exists ? 1 : 0));
+        parcel.writeByte((byte) (login ? 1 : 0));
     }
 
     public interface UserAlreadyExists{
@@ -98,6 +140,10 @@ public class User {
                     Log.d(TAG, ds.getId() + " => " + ds.getData().get("email")  + ", " + ds.getData().get("password"));
                     if (qemail.equals(email) && qpassword.equals(password)) {
                         login = true;
+                        userName = ds.getString("userName");
+                        firstName = ds.getString("firstName");
+                        lastName = ds.getString("lastName");
+
                     }
                 }
 
@@ -132,6 +178,8 @@ public class User {
                 });
 
     }
+
+    public String getUserName(){return userName;}
 }
 
 
