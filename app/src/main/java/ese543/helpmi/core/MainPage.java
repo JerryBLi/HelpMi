@@ -216,7 +216,9 @@ public class MainPage extends AppCompatActivity implements MessagesFragment.OnLi
 
     @Override
     public void onListFragmentInteraction(UserTask item) {
-
+        Intent i = new Intent(this,DisplayTaskActivity.class);
+        i.putExtra("task",item);
+        startActivity(i);
         return;
     }
 

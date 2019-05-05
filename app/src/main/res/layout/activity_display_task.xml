@@ -6,146 +6,164 @@
     android:layout_height="match_parent"
     tools:context=".core.DisplayTaskActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task Title" />
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/editTextTitleDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="Title" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Title" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date of Delivery" />
+            <EditText
+                android:id="@+id/editTextTitleDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Title" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Created By" />
 
-        <EditText
-            android:id="@+id/editTextDateOfDeliveryDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="Date of Delivery" />
+            <EditText
+                android:id="@+id/editTextTaskCreatorDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Task Created By" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date of Delivery" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location to Complete Task" />
+            <EditText
+                android:id="@+id/editTextDateOfDeliveryDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Date of Delivery" />
 
-        <EditText
-            android:id="@+id/editTextLocationDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="Location to Complete Task" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location to Complete Task" />
 
-        <Button
-            android:id="@+id/buttonShowLocationDisplayTask"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickShowLocation"
-            android:text="Show Location On Map" />
+            <EditText
+                android:id="@+id/editTextLocationDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Location to Complete Task" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Payment Amount" />
+            <Button
+                android:id="@+id/buttonShowLocationDisplayTask"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickShowLocation"
+                android:text="Show Location On Map" />
 
-        <EditText
-            android:id="@+id/editTextPaymentDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="$0.00" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment Amount" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Is Payment Negotiable" />
+            <EditText
+                android:id="@+id/editTextPaymentDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="$0.00" />
 
-        <CheckBox
-            android:id="@+id/checkBoxPaymentNegDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Is Payment Negotiable" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Is Payment Negotiable" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task Description" />
+            <CheckBox
+                android:id="@+id/checkBoxPaymentNegDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Is Payment Negotiable" />
 
-        <EditText
-            android:id="@+id/editTextTaskDescriptionDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:isScrollContainer="true"
-            android:lines="6"
-            android:minLines="5"
-            android:text="Task Description" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Description" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Is Task Complete" />
+            <EditText
+                android:id="@+id/editTextTaskDescriptionDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:lines="6"
+                android:minLines="5"
+                android:text="Task Description" />
 
-        <CheckBox
-            android:id="@+id/checkBoxIsTaskCompleteDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Is Task Complete" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Is Task Complete" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task Assigned To" />
+            <CheckBox
+                android:id="@+id/checkBoxIsTaskCompleteDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="Is Task Complete" />
 
-        <EditText
-            android:id="@+id/editTextTaskAssignedToDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Assigned To" />
 
-        <Button
-            android:id="@+id/buttonTaskCompleteDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickTaskComplete"
-            android:text="Mark Task Complete" />
+            <EditText
+                android:id="@+id/editTextTaskAssignedToDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:text="Name" />
 
-        <Button
-            android:id="@+id/buttonMessagePosterDisplayTask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickMessagePoster"
-            android:text="Message Poster" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonTaskCompleteDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickTaskComplete"
+                android:text="Mark Task Complete" />
+
+            <Button
+                android:id="@+id/buttonMessagePosterDisplayTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onClickMessagePoster"
+                android:text="Message Poster" />
+        </LinearLayout>
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

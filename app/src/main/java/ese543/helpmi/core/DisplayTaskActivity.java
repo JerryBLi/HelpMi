@@ -1,5 +1,6 @@
 package ese543.helpmi.core;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import ese543.helpmi.R;
 public class DisplayTaskActivity extends AppCompatActivity {
 
     private EditText editTextTitleDisplayTask;
+    private EditText editTextTaskCreatorDisplayTask;
     private EditText editTextDateOfDeliveryDisplayTask;
     private EditText editTextLocationDisplayTask;
     private EditText editTextPaymentDisplayTask;
@@ -31,6 +33,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         //Initialize all the components
         editTextTitleDisplayTask = findViewById(R.id.editTextTitleDisplayTask);
+        editTextTaskCreatorDisplayTask = findViewById(R.id.editTextTaskCreatorDisplayTask);
         editTextDateOfDeliveryDisplayTask = findViewById(R.id.editTextDateOfDeliveryDisplayTask);
         editTextLocationDisplayTask = findViewById(R.id.editTextLocationDisplayTask);
         editTextPaymentDisplayTask = findViewById(R.id.editTextPaymentDisplayTask);
@@ -57,9 +60,10 @@ public class DisplayTaskActivity extends AppCompatActivity {
             buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
             buttonMessagePosterDisplayTask.setVisibility(View.VISIBLE);
         }
-
+        Intent i = getIntent();
+        UserTask t = (UserTask)i.getParcelableExtra("task");
         //TODO - populate task
-        populateFields(null);
+        populateFields(t);
     }
 
     public void onClickShowLocation(View view)
@@ -83,6 +87,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
             return;
 
         editTextTitleDisplayTask.setText(t.getTitle());
+        editTextTaskCreatorDisplayTask.setText(t.getUserOwner());
         editTextDateOfDeliveryDisplayTask.setText(t.getDeliveryDate().toString());
         editTextLocationDisplayTask.setText(t.getLongitude()+","+t.getLatitude());
         editTextPaymentDisplayTask.setText(t.getPayment()+"");

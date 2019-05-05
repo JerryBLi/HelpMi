@@ -1,5 +1,7 @@
 package ese543.helpmi.core;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class UserTask {
+public class UserTask implements Parcelable {
     private static final String TAG = UserTask.class.getClass().getSimpleName();
     private String userOwner;
     private String userAssigned;
@@ -59,6 +61,32 @@ public class UserTask {
         this.userAssigned = userAssigned;
         this.taskHash = taskHash;
     }
+
+    protected UserTask(Parcel in) {
+        userOwner = in.readString();
+        userAssigned = in.readString();
+        title = in.readString();
+        deliveryDate = new Date(in.readLong());
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        payment = in.readDouble();
+        isNegotiable = in.readByte() != 0;
+        isComplete = in.readByte() != 0;
+        description = in.readString();
+        taskHash = in.readString();
+    }
+
+    public static final Creator<UserTask> CREATOR = new Creator<UserTask>() {
+        @Override
+        public UserTask createFromParcel(Parcel in) {
+            return new UserTask(in);
+        }
+
+        @Override
+        public UserTask[] newArray(int size) {
+            return new UserTask[size];
+        }
+    };
 
     public void uploadToDatabase()
     {
@@ -133,4 +161,24 @@ public class UserTask {
     public void setIsComplete(boolean isComplete){this.isComplete = isComplete;}
     public void setDescription(String description){this.description=description;}
     public void setTaskNum(String taskNum){this.taskHash = taskHash;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userOwner);
+        parcel.writeString(userAssigned);
+        parcel.writeString(title);
+        parcel.writeLong(deliveryDate.getTime());
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
+        parcel.writeDouble(payment);
+        parcel.writeByte((byte) (isNegotiable ? 1 : 0));
+        parcel.writeByte((byte) (isComplete ? 1 : 0));
+        parcel.writeString(description);
+        parcel.writeString(taskHash);
+    }
 }
