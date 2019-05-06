@@ -60,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        sdf = new SimpleDateFormat("EEE, MMM d 'AT' HH:mm a");
+        sdf = new SimpleDateFormat("EEE, MMM dd yyyy 'at' HH:mm:ss a");
 
         layout = (LinearLayout) findViewById(R.id.layout1);
         layout_2 = (RelativeLayout) findViewById(R.id.layout2);

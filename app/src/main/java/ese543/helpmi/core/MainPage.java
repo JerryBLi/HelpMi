@@ -1,6 +1,7 @@
 package ese543.helpmi.core;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -34,6 +35,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,6 +56,8 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
     private static final String TAG = MainPage.class.getName();
     private final int REQUEST_LOCATION_PERMISSION = 1;
     public static final int PICK_IMAGE = 2;
+    private SimpleDateFormat sdf;
+
     private ArrayList<Uri> images = new ArrayList<>();
 
     private ActionBar toolbar;
@@ -107,6 +112,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         }
     };
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +120,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
 
         userName = getIntent().getExtras().get("userName").toString();
         user = (User)getIntent().getParcelableExtra("user");
+        sdf = new SimpleDateFormat("EEE, MMM dd yyyy 'at' HH:mm:ss a");
 
         Log.d(TAG, "onCreate..userID: " + user.getUserID() + "userName: " + userName);
 
@@ -139,8 +146,8 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-
+        //String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        String currentDateString = sdf.format(c.getTime());
         TextView textView = (TextView) findViewById(R.id.editTextDateDeliver);
         textView.setText(currentDateString);
     }
@@ -222,7 +229,6 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
                 }
                 editTextImages.setText(sb.toString());
             }
-
             return;
         }
     }
@@ -260,7 +266,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         EditText editTextDescription = findViewById(R.id.editTextDescription);
 
         String title = editTextTitle.getText().toString();
-        //Date date = getDateFromInput(editTextDateDeliver.getText().toString());
+        Date datePosted = getCurrentTime(new Date());
         Date deliverDate = getDateFromInput(editTextDateDeliver.getText().toString());
 
         double payment = 0;
@@ -272,13 +278,10 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         }
         boolean isNegotiable = checkBoxNegotiable.isChecked();
         String description = editTextDescription.getText().toString();
-
-        task = new UserTask(user.getUserName(),title,new Date(),deliverDate,latitude,longitude,payment,isNegotiable,description);
+        task = new UserTask(user.getUserName(),title, datePosted,deliverDate,latitude,longitude,payment,isNegotiable,description,false, "");
         task.setNumImages(images.size());
         uploadImages(task.getUserOwner(),task.getTitle());
         task.uploadToDatabase();
-
-
 
         Toast toast = Toast.makeText(this, "Successfully added task!",Toast.LENGTH_SHORT);
         toast.show();
@@ -329,10 +332,25 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
 
     public Date getDateFromInput(String s)
     {
-        myCalendar.set(2019,5,4);
-        return myCalendar.getTime();
-        //TODO
+        Date date = new Date();
+        try {
+            date = sdf.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
+    public Date getCurrentTime(Date date)
+    {
+        Date currentDate = new Date();
+        try {
+            currentDate = sdf.parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return currentDate;
+    }
+
     public double getLongitudeFromInput(String s)
     {
         return 10;

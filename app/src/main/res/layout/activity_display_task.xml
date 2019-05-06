@@ -111,11 +111,15 @@
             <EditText
                 android:id="@+id/editTextLocationDisplayTask"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="6.5"
-                android:ems="10"
                 android:enabled="false"
-                android:inputType="textPersonName"
+                android:ems="10"
+                android:gravity="bottom|left"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:lines="3"
+                android:minLines="2"
                 android:text="Location to Complete Task" />
 
             <ImageButton
@@ -175,7 +179,7 @@
                 android:layout_weight="7.5"
                 android:ems="10"
                 android:enabled="false"
-                android:gravity="top|left"
+                android:gravity="bottom|left"
                 android:inputType="textMultiLine"
                 android:isScrollContainer="true"
                 android:lines="6"
@@ -216,27 +220,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3.2"
+                android:clickable="true"
                 android:enabled="false"
+                android:focusable="auto"
                 android:text="Completed?" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/buttonTaskCompleteDisplayTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="onClickTaskComplete"
-                android:text="Mark Task Complete" />
-
-            <Button
-                android:id="@+id/buttonInterested"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClickInterested"
-                android:text="Interested" />
 
         </TableRow>
 
@@ -246,10 +240,21 @@
 
             <Button
                 android:id="@+id/buttonMessagePosterDisplayTask"
-                android:layout_width="match_parent"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="135dp"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/sym_action_chat"
                 android:onClick="onClickMessagePoster"
-                android:text="Message Poster" />
+                android:text="Message" />
+
+            <Button
+                android:id="@+id/buttonInterested"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/star_off"
+                android:onClick="onClickInterested"
+                android:text="Like" />
 
         </TableRow>
 

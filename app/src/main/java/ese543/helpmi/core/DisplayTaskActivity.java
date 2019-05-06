@@ -1,15 +1,20 @@
 package ese543.helpmi.core;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -36,8 +41,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -95,7 +104,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
         editTextTaskAssignedToDisplayTask = findViewById(R.id.editTextTaskAssignedToDisplayTask);
 
         buttonShowLocationDisplayTask = findViewById(R.id.buttonShowLocationDisplayTask);
-        buttonTaskCompleteDisplayTask = findViewById(R.id.buttonTaskCompleteDisplayTask);
+        //buttonTaskCompleteDisplayTask = findViewById(R.id.buttonTaskCompleteDisplayTask);
         buttonMessagePosterDisplayTask = findViewById(R.id.buttonMessagePosterDisplayTask);
         buttonInterested = findViewById(R.id.buttonInterested);
         textViewInterestedUsers = findViewById(R.id.textViewInterestedUsers);
@@ -103,11 +112,17 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         imageButtonViewImages = findViewById(R.id.imageButtonViewImages);
 
-        buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
+        //buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
         buttonMessagePosterDisplayTask.setVisibility(View.GONE);
         buttonInterested.setVisibility(View.GONE);
         listViewInterestedUsers.setVisibility(View.GONE);
         textViewInterestedUsers.setVisibility(View.GONE);
+
+
+
+
+
+
         Intent i = getIntent();
 
         t = (UserTask)i.getParcelableExtra("task");
@@ -140,7 +155,11 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
     public void onClickMessagePoster(View view)
     {
-        //TODO - message the poster
+        Intent i = new Intent(DisplayTaskActivity.this, ChatActivity.class);
+        i.putExtra("userNameFrom",user.getUserName());
+        i.putExtra("userNameTo", t.getUserOwner());
+        i.putExtra("task",t);
+        startActivity(i);
     }
 
     public void viewImages(View view)
@@ -205,29 +224,39 @@ public class DisplayTaskActivity extends AppCompatActivity {
         editTextDatePostedDisplayTask.setText(t.getDatePosted().toString());
         editTextDateOfDeliveryDisplayTask.setText(t.getDeliveryDate().toString());
         editTextLocationDisplayTask.setText(t.getLongitude()+","+t.getLatitude());
+
+        Geocoder gcd = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = gcd.getFromLocation(t.getLatitude(), t.getLongitude(), 1);
+
+            Log.d(TAG, "ADDRESS: " + addresses.get(0));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses != null && addresses.size() > 0) {
+//            editTextLocationDisplayTask.setText(addresses.get(0).getAddressLine(0) + ", " +
+//                                                addresses.get(0).getAddressLine(1));
+            String cityName = addresses.get(0).getAddressLine(0);
+            String stateName = addresses.get(0).getAddressLine(1);
+            String countryName = addresses.get(0).getAddressLine(2);
+            StringBuilder sb = new StringBuilder();
+//            if(cityName.)
+//            sb.append(cityName)
+            editTextLocationDisplayTask.setText(cityName);
+        }
+//        else {
+//            editTextLocationDisplayTask.setText((addresses.get(0).getLocality()));
+//        }
+
         editTextPaymentDisplayTask.setText(t.getPayment()+"");
         checkBoxPaymentNegDisplayTask.setChecked(t.getIsNegotiable());
         editTextTaskDescriptionDisplayTask.setText(t.getDescription());
         checkBoxIsTaskCompleteDisplayTask.setChecked(t.getIsComplete());
         editTextTaskAssignedToDisplayTask.setText(t.getUserAssigned());
 
-        userListAdapter = new UserListAdapter(DisplayTaskActivity.this, interestedUsers);
-        listViewInterestedUsers.setAdapter(userListAdapter);
-        listViewInterestedUsers.setClickable(true);
-        listViewInterestedUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-                String userName = listViewInterestedUsers.getItemAtPosition(position).toString();
-
-                Intent i = new Intent(DisplayTaskActivity.this, ChatActivity.class);
-                i.putExtra("userNameFrom",user.getUserName());
-                i.putExtra("userNameTo", userName);
-                i.putExtra("task",t);
-                startActivity(i);
-
-            }
-        });
 
         String currentUser = user.getUserName();
         String poster = t.getUserOwner();
@@ -236,9 +265,112 @@ public class DisplayTaskActivity extends AppCompatActivity {
         if(currentUser.equals(poster))
         {
 
+            userListAdapter = new UserListAdapter(DisplayTaskActivity.this, interestedUsers);
+            listViewInterestedUsers.setAdapter(userListAdapter);
+            listViewInterestedUsers.setClickable(true);
+            listViewInterestedUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                    String userName = listViewInterestedUsers.getItemAtPosition(position).toString();
+
+                    Intent i = new Intent(DisplayTaskActivity.this, ChatActivity.class);
+                    i.putExtra("userNameFrom",user.getUserName());
+                    i.putExtra("userNameTo", userName);
+                    i.putExtra("task",t);
+                    startActivity(i);
+
+                }
+            });
+
+            listViewInterestedUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    String userName = listViewInterestedUsers.getItemAtPosition(position).toString();
+
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("userAssigned", userName);
+                    t.editTask(map);
+                    t.setUserAssigned(userName);
+                    editTextTaskAssignedToDisplayTask.setText(userName);
+
+                    return true;
+                }
+            });
+
+            checkBoxIsTaskCompleteDisplayTask.setEnabled(true);
+            checkBoxIsTaskCompleteDisplayTask.setClickable(true);
+            checkBoxIsTaskCompleteDisplayTask.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("isComplete", isChecked);
+                    t.editTask(map);
+                    t.setIsComplete(isChecked);
+//                if (isChecked )
+//                {
+//                    // perform logic
+//                }
+
+                }
+            });
+
+
+            editTextTitleDisplayTask.setEnabled(true);
+            editTextTitleDisplayTask.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("title", editTextTitleDisplayTask.getText().toString());
+                    t.editTask(map);
+                    t.setTitle(editTextTitleDisplayTask.getText().toString());
+                }
+            });
+
+            editTextPaymentDisplayTask.setEnabled(true);
+            editTextPaymentDisplayTask.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    double payment = 0;
+                    try{
+                        payment = Double.parseDouble(editTextPaymentDisplayTask.getText().toString());
+                    }catch(Exception e)
+                    {
+
+                    }
+                    map.put("payment", payment);
+                    t.editTask(map);
+                    t.setPayment(payment);
+                }
+            });
+
             buttonMessagePosterDisplayTask.setVisibility(View.GONE);
             buttonInterested.setVisibility(View.GONE);
-            buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
+            //buttonTaskCompleteDisplayTask.setVisibility(View.VISIBLE);
             textViewInterestedUsers.setVisibility(View.VISIBLE);
             listViewInterestedUsers.setVisibility(View.VISIBLE);
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -279,9 +411,13 @@ public class DisplayTaskActivity extends AppCompatActivity {
         {
             buttonInterested.setVisibility(View.VISIBLE);
             buttonMessagePosterDisplayTask.setVisibility(View.VISIBLE);
-            buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
             textViewInterestedUsers.setVisibility(View.GONE);
             listViewInterestedUsers.setVisibility(View.GONE);
+            editTextTitleDisplayTask.setEnabled(false);
+            editTextPaymentDisplayTask.setEnabled(false);
+            checkBoxIsTaskCompleteDisplayTask.setEnabled(false);
+            checkBoxIsTaskCompleteDisplayTask.setClickable(false);
+
         }
     }
 

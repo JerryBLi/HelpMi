@@ -40,7 +40,7 @@ public class UserTask implements Parcelable {
 
     private ArrayList<String> interestedUsers;
 
-    public UserTask(String userOwner, String title, Date datePosted,Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description)
+    public UserTask(String userOwner, String title, Date datePosted,Date deliveryDate, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned)
     {
 //        FirebaseFirestore db = FirebaseFirestore.getInstance();
 //        DocumentReference ref = db.collection("tasks").document();
@@ -54,8 +54,8 @@ public class UserTask implements Parcelable {
         this.payment = payment;
         this.isNegotiable = isNegotiable;
         this.description = description;
-        isComplete = false;
-        userAssigned = "";
+        this.isComplete = isComplete;
+        this.userAssigned = userAssigned;
         taskHash = "";
         interestedUsers = new ArrayList<String>();
         numImages = 0;
@@ -141,46 +141,13 @@ public class UserTask implements Parcelable {
         db.collection("tasks")
                 .document(taskID)
                 .set(task);
+    }
 
+    public void editTask(Map<String, Object> newValue){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("tasks").document(taskID);
+        ref.update(newValue);
 
-
-
-
-//        db.collection("tasks")
-//                .add(task)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//
-//                        Log.d(TAG, "TaskID: " + taskID);
-//                        setTaskID(documentReference.getId());
-//                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-//                        Log.d(TAG, "TaskID: " + taskID);
-//                        callback.onCallback(taskID);
-//
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w(TAG, "Error adding document", e);
-//                    }
-//                });
-//        db.collection("users")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                            }
-//                        }
-//                        else {
-//                            Log.w(TAG, "Error getting documents.", task.getException());
-//                        }
-//                    }
-//                });
     }
 
     // Getters

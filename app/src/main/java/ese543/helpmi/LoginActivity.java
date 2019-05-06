@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         final String password = editTextPassword.getText().toString();
         if(isInputFieldsValid(userName, password))
         {
-            //connect to DB and check if user exists. If exists, populate the user field
+            //connect to DB and check if user exists. If exists, login the user field
             final User user = new User(userName, password);
             user.loginUser(new User.UserLogin() {
                 @Override

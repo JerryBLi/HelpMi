@@ -132,7 +132,7 @@ public class MyCreatedTasksFragment extends Fragment {
                         qNumImgs = qds.getLong("numImages");
                         //Log.d(TAG, qds.getId() + " => " + qds.getData());
                         // create Task
-                        UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
+                        UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription, qisComplete, quserAssigned);
                         task.setTaskID(qtaskID);
                         task.setNumImages((int)qNumImgs);
                         // add to list
