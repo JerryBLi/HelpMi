@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/MediumBlue"
-    android:backgroundTint="@color/Black">
+    android:background="@color/HelpMi_black">
 
     <ImageView
         android:layout_width="328dp"

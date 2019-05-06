@@ -24,7 +24,7 @@
         android:id="@+id/buttonShowMaps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/HelpMi_black"
         android:onClick="openMap"
         android:text="Show Tasks on Maps"
         android:textColor="@android:color/white"
