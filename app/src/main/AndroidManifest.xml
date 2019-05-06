@@ -14,9 +14,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/helpmi_ico_sq"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/helpmi_ico"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".core.DisplayTaskActivity"></activity>
@@ -44,13 +44,10 @@
             android:label="@string/title_activity_login2" />
         <activity android:name=".CreateNewUserActivity" />
         <activity android:name=".core.ChatActivity" />
-        <activity android:name=".startup.SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-
+        <activity android:name=".startup.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
