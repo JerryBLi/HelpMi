@@ -128,7 +128,7 @@ public class ChatActivity extends AppCompatActivity {
                                 }
 
                                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-                                        Log.d("userNameTo: ", doc.getDocument().getId());
+                                    Log.d("userNameTo: ", doc.getDocument().getId());
                                 }
 
                             }
@@ -136,23 +136,21 @@ public class ChatActivity extends AppCompatActivity {
                     }
 
                 }
-                for(QueryDocumentSnapshot qds : querySnapshot )
-                {
-                    Map map = qds.getData();
+                for (DocumentChange qds : querySnapshot.getDocumentChanges()) {
+                        Map map = qds.getDocument().getData();
 
-                    Log.w(TAG, qds.getData().toString());
-                    String message = map.get("message").toString();
-                    String userName = map.get("userName").toString();
-                    String time = map.get("time").toString();
+                        //Log.w(TAG, qds.getData().toString());
+                        String message = map.get("message").toString();
+                        String userName = map.get("userName").toString();
+                        String time = map.get("time").toString();
 
-                    if(userName.equals(userNameFrom)){
-                        addMessageBox("You " , message,time, 1);
-                    }
-                    else{
-                        addMessageBox(userNameTo, message,time, 2);
+                        if (userName.equals(userNameFrom)) {
+                            addMessageBox("You ", message, time, 1);
+                        } else {
+                            addMessageBox(userNameTo, message, time, 2);
+                        }
                     }
                 }
-            }
         });
 //        reference1.addChildEventListener(new ChildEventListener() {
 //            @Override
