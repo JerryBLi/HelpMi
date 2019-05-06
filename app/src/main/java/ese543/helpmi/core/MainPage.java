@@ -19,10 +19,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -30,16 +28,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,14 +40,14 @@ import java.util.Date;
 
 import ese543.helpmi.R;
 import ese543.helpmi.fragments.DatePickerFragment;
-import ese543.helpmi.fragments.MessagesFragment;
+import ese543.helpmi.fragments.MyCreatedTasksFragment;
 import ese543.helpmi.fragments.NewTaskFragment;
 import ese543.helpmi.fragments.TaskFragment;
 import ese543.helpmi.fragments.dummy.DummyContent;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, MessagesFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
+public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener, MyCreatedTasksFragment.OnListFragmentInteractionListener, NewTaskFragment.OnFragmentInteractionListener, TaskFragment.OnListFragmentInteractionListener{
 
 
     private static final String TAG = MainPage.class.getName();
@@ -97,8 +90,12 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
                     return true;
                 case R.id.navigation_Messages:
                     buttonShowMaps.setVisibility(View.GONE);
-                    toolbar.setTitle("My Messages");
-                    loadFragment(new MessagesFragment());
+                    toolbar.setTitle("My Tasks");
+                    Fragment fragment = new MyCreatedTasksFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("user",user);
+                    fragment.setArguments(bundle);
+                    loadFragment(fragment);
                     return true;
                 case R.id.nagivation_NewPost:
                     buttonShowMaps.setVisibility(View.GONE);
@@ -171,10 +168,6 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
 
     }
 
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
-    }
 
     /* **********************************************************************
     *  **********************************************************************

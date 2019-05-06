@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/navigation_Messages"
-        android:icon="@drawable/baseline_message_black_18dp"
+        android:icon="@drawable/baseline_star_black_18dp"
         android:title="@string/title_messages" />
     <item
         android:id="@+id/nagivation_NewPost"
