@@ -97,9 +97,9 @@
 
                     <CheckBox
                         android:id="@+id/checkBoxNegotiable"
-                        android:layout_weight="10.0"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="10.0"
                         android:text="Negotiable" />
                 </TableRow>
 
@@ -119,19 +119,50 @@
                         android:inputType="textMultiLine"
                         android:lines="8"
                         android:minLines="6" />
-                </TableRow>
 
+                </TableRow>
                 <TableRow
-                    android:layout_weight="10.0"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/buttonSubmit"
+                    <ImageButton
+                        android:id="@+id/imageButtonImages"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="submitNewTask"
-                        android:text="Submit" />
+                        android:onClick="uploadImages"
+                        android:src="@android:drawable/ic_menu_gallery" />
+
+                    <EditText
+                        android:id="@+id/editTextImages"
+                        style="@style/Widget.AppCompat.EditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8.0"
+                        android:editable="false"
+                        android:ems="10"
+                        android:gravity="top|left"
+                        android:hint="Images to Upload"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:minLines="6" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_weight="10.0">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonSubmit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="submitNewTask"
+                            android:text="Submit" />
+                    </LinearLayout>
+
                 </TableRow>
 
             </TableLayout>

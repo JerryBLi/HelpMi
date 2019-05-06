@@ -2,6 +2,7 @@ package ese543.helpmi.core;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,9 +32,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,6 +59,8 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
 
     private static final String TAG = MainPage.class.getName();
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    public static final int PICK_IMAGE = 2;
+    private ArrayList<Uri> images = new ArrayList<>();
 
     private ActionBar toolbar;
     private Button buttonShowMaps;
@@ -66,6 +76,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
     private EditText editTextLocation;
     private EditText editTextPayment;
     private EditText editTextDescription;
+    private EditText editTextImages;
 
     private String userName;
     private User user;
@@ -175,6 +186,53 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
     *  **********************************************************************
      */
 
+    public void uploadImages(View view)
+    {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE) {
+
+            ClipData clip = data.getClipData();
+            ArrayList<Uri> uris = new ArrayList<>();
+            if(clip == null)
+            {
+                uris.add(data.getData());
+            }
+            else if (clip.getItemCount() > 0) {
+
+                for (int i = 0; i < clip.getItemCount(); i++) {
+                    ClipData.Item item = clip.getItemAt(i);
+                    Uri uri = item.getUri();
+                    uris.add(uri);
+                }
+
+
+            }
+            editTextImages = findViewById(R.id.editTextImages);
+            images = uris;
+            if(images != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                for(Uri uri : images)
+                {
+                    String result = uri.getLastPathSegment();
+                    sb.append(result +"\n");
+                }
+                editTextImages.setText(sb.toString());
+            }
+
+            return;
+        }
+    }
 
     /* METHOD TO CREATE NEW TASK */
     public void createNewTask()
@@ -223,8 +281,11 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         String description = editTextDescription.getText().toString();
 
         task = new UserTask(user.getUserName(),title,new Date(),deliverDate,latitude,longitude,payment,isNegotiable,description);
-
+        uploadImages(task.getUserOwner(),task.getTitle());
         task.uploadToDatabase();
+
+
+
         Toast toast = Toast.makeText(this, "Successfully added task!",Toast.LENGTH_SHORT);
         toast.show();
 
@@ -233,6 +294,30 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         BottomNavigationView bottomNavigationView;
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.setSelectedItemId(R.id.navigation_ListView);
+    }
+
+    private void uploadImages(String userName, String userTask)
+    {
+        if(images != null)
+        {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            int counter = 0;
+            for(Uri uri : images)
+            {
+
+                StorageReference riversRef = storageRef.child(userName+"-"+userTask + counter);
+                riversRef.putFile(uri)
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Log.d(TAG,"Image upload failed" );
+                            }
+                        });;
+                counter++;
+
+            }
+
+        }
     }
 
     //if user click on the checkbox, disable the EditText for Location
