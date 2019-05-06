@@ -63,15 +63,15 @@ public class ChatActivity extends AppCompatActivity {
         sdf = new SimpleDateFormat("EEE, MMM d 'AT' HH:mm a");
 
         layout = (LinearLayout) findViewById(R.id.layout1);
-        layout_2 = (RelativeLayout)findViewById(R.id.layout2);
-        sendButton = (ImageView)findViewById(R.id.sendButton);
-        messageArea = (EditText)findViewById(R.id.messageArea);
-        scrollView = (ScrollView)findViewById(R.id.scrollView);
+        layout_2 = (RelativeLayout) findViewById(R.id.layout2);
+        sendButton = (ImageView) findViewById(R.id.sendButton);
+        messageArea = (EditText) findViewById(R.id.messageArea);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollView.fullScroll(View.FOCUS_DOWN);
 
 
         Intent i = getIntent();
-        t = (UserTask)i.getParcelableExtra("task");
+        t = (UserTask) i.getParcelableExtra("task");
 
         userNameFrom = i.getExtras().get("userNameFrom").toString();
         userNameTo = i.getExtras().get("userNameTo").toString();
@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String messageText = messageArea.getText().toString();
 
-                if(!messageText.equals("")){
+                if (!messageText.equals("")) {
                     Map<String, String> map = new HashMap<String, String>();
                     String currentDateandTime = sdf.format(new Date());
                     map.put("message", messageText);
@@ -105,9 +105,11 @@ public class ChatActivity extends AppCompatActivity {
                     messageIDTo = messageRefTo.getId();
                     messageRefTo.add(map);
                     messageArea.setText("");
+                    messagesRef.add(map);
                 }
             }
         });
+
         messagesRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException e) {
@@ -115,27 +117,25 @@ public class ChatActivity extends AppCompatActivity {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-//                for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
-//                    if (doc.getType() == DocumentChange.Type.ADDED) {
-//                        Log.d("userNameFrom ", doc.getDocument().getId());
-//                        doc.getDocument().getReference().collection("userNameFrom").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-//                                if (e != null) {
-//                                    Log.d("", "Error : " + e.getMessage());
-//                                }
-//
-//                                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-//                                    if (doc.getType() == DocumentChange.Type.ADDED) {
-//                                        Log.d("userNameTo: ", doc.getDocument().getId());
-//                                    }
-//                                }
-//
-//                            }
-//                        });
-//                    }
-//
-//                }
+                for (DocumentChange doc : querySnapshot.getDocumentChanges()) {
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                        Log.d("userNameFrom ", doc.getDocument().getId());
+                        doc.getDocument().getReference().collection(userNameFrom).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                                if (e != null) {
+                                    Log.d("", "Error : " + e.getMessage());
+                                }
+
+                                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                                        Log.d("userNameTo: ", doc.getDocument().getId());
+                                }
+
+                            }
+                        });
+                    }
+
+                }
                 for(QueryDocumentSnapshot qds : querySnapshot )
                 {
                     Map map = qds.getData();
