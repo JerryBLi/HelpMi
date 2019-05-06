@@ -181,6 +181,14 @@
                 android:lines="6"
                 android:minLines="5"
                 android:text="Task Description" />
+
+            <ImageButton
+                android:id="@+id/imageButtonViewImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="viewImages"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
+
         </TableRow>
 
         <TableRow

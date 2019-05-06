@@ -110,7 +110,7 @@ public class TaskFragment extends Fragment {
                         Date qdeliveryDate, qDatePosted;
                         double qlatitude,  qlongitude, qpayment;
                         boolean qisComplete, qisNegotiable;
-
+                        long qNumImgs;
 
                         qtaskID= qds.getId();
                         qowner = qds.getString("owner");
@@ -125,10 +125,12 @@ public class TaskFragment extends Fragment {
                         qpayment = qds.getDouble("payment");
                         qdeliveryDate = qds.getDate("deliveryDate");
                         qDatePosted = qds.getDate("datePosted");
+                        qNumImgs = qds.getLong("numImages");
                         //Log.d(TAG, qds.getId() + " => " + qds.getData());
                         // create Task
                         UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription);
                         task.setTaskID(qtaskID);
+                        task.setNumImages((int)qNumImgs);
                         // add to list
                         userTaskList.add(task);
                     }

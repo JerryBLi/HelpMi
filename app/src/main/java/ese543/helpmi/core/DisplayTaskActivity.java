@@ -29,7 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -61,12 +65,15 @@ public class DisplayTaskActivity extends AppCompatActivity {
     private Button buttonInterested;
     private Button buttonTaskCompleteDisplayTask;
     private Button buttonMessagePosterDisplayTask;
+    private ImageButton imageButtonViewImages;
 
 
     //private ArrayList<User> interestedUsers = new ArrayList<>();
     private ArrayList<String> interestedUsers = new ArrayList<>();
     private ListView listViewInterestedUsers;
     private UserListAdapter userListAdapter;
+
+    private ArrayList<File> pictures = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +99,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
         textViewInterestedUsers = findViewById(R.id.textViewInterestedUsers);
         listViewInterestedUsers = findViewById(R.id.listViewInterestedUsers);
 
+        imageButtonViewImages = findViewById(R.id.imageButtonViewImages);
 
         buttonTaskCompleteDisplayTask.setVisibility(View.GONE);
         buttonMessagePosterDisplayTask.setVisibility(View.GONE);
@@ -101,6 +109,8 @@ public class DisplayTaskActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         t = (UserTask)i.getParcelableExtra("task");
+        if(t.getNumImages() == 0)
+            imageButtonViewImages.setVisibility(View.GONE);
         Log.d(TAG, "taskID: " + t.getTaskID() + " title: " + t.getTitle());
 
 
@@ -110,6 +120,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         //TODO - populate task
         populateFields();
+        getPictures();
     }
 
     public void onClickShowLocation(View view)
@@ -130,6 +141,35 @@ public class DisplayTaskActivity extends AppCompatActivity {
         //TODO - message the poster
     }
 
+    public void viewImages(View view)
+    {
+        pictures.size();
+        return;
+    }
+
+    private void getPictures()
+    {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        for(int i =0; i < t.getNumImages(); i++)
+        {
+            try
+            {
+                StorageReference ref = storageRef.child(t.getUserOwner()+"-"+t.getTitle() + i);
+                final File localFile = File.createTempFile("images", "jpg");
+                ref.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                pictures.add(localFile);
+                            }}
+                        );
+
+            }catch(Exception e)
+            {
+
+            }
+        }
+    }
     public void onClickInterested(View view)
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

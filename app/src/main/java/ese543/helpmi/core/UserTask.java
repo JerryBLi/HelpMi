@@ -36,6 +36,7 @@ public class UserTask implements Parcelable {
     private boolean isComplete;
     private String description;
     private String taskHash;
+    private int numImages;
 
     private ArrayList<String> interestedUsers;
 
@@ -57,6 +58,7 @@ public class UserTask implements Parcelable {
         userAssigned = "";
         taskHash = "";
         interestedUsers = new ArrayList<String>();
+        numImages = 0;
     }
 
     public UserTask(String userOwner, String title, Date deliveryDate, Date datePosted, double latitude, double longitude, double payment, boolean isNegotiable, String description, boolean isComplete, String userAssigned, String taskHash)
@@ -93,6 +95,7 @@ public class UserTask implements Parcelable {
         taskHash = in.readString();
         //interestedUsers = in.readArrayList(User.class.getClassLoader());
         interestedUsers = in.readArrayList(null);
+        numImages = in.readInt();
     }
 
     public static final Creator<UserTask> CREATOR = new Creator<UserTask>() {
@@ -132,6 +135,7 @@ public class UserTask implements Parcelable {
         task.put("isComplete", isComplete);
         task.put("userAssigned", userAssigned);
         task.put("interestedUsers", interestedUsers);
+        task.put("numImages",numImages);
 
         // Add a new document with a generated ID
         db.collection("tasks")
@@ -194,6 +198,7 @@ public class UserTask implements Parcelable {
     public String getDescription(){return description;}
     public String getTaskNum(){return taskHash;}
     public ArrayList<String> getInterestedUsers(){return interestedUsers;};
+    public int getNumImages(){return  numImages;}
 
     //Setters
     public void setTaskID(String taskID){this.taskID = taskID;}
@@ -210,6 +215,7 @@ public class UserTask implements Parcelable {
     public void setDescription(String description){this.description=description;}
     public void setTaskNum(String taskNum){this.taskHash = taskHash;}
     public void setInterestedUsers(ArrayList<String> interestedUsers){this.interestedUsers = interestedUsers;};
+    public void setNumImages(int numImages){this.numImages = numImages;}
 
     @Override
     public int describeContents() {
@@ -232,5 +238,6 @@ public class UserTask implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(taskHash);
         parcel.writeList(interestedUsers);
+        parcel.writeInt(numImages);
     }
 }

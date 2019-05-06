@@ -281,6 +281,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
         String description = editTextDescription.getText().toString();
 
         task = new UserTask(user.getUserName(),title,new Date(),deliverDate,latitude,longitude,payment,isNegotiable,description);
+        task.setNumImages(images.size());
         uploadImages(task.getUserOwner(),task.getTitle());
         task.uploadToDatabase();
 
@@ -316,7 +317,7 @@ public class MainPage extends AppCompatActivity implements  DatePickerDialog.OnD
                 counter++;
 
             }
-
+            images = null;
         }
     }
 
