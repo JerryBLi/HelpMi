@@ -111,7 +111,7 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         t = (UserTask)i.getParcelableExtra("task");
         if(t.getNumImages() == 0)
-            imageButtonViewImages.setVisibility(View.GONE);
+            imageButtonViewImages.setEnabled(false);
         Log.d(TAG, "taskID: " + t.getTaskID() + " title: " + t.getTitle());
 
 
