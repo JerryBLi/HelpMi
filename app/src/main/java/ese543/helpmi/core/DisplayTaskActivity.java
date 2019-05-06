@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -204,6 +205,21 @@ public class DisplayTaskActivity extends AppCompatActivity {
 
         userListAdapter = new UserListAdapter(DisplayTaskActivity.this, interestedUsers);
         listViewInterestedUsers.setAdapter(userListAdapter);
+        listViewInterestedUsers.setClickable(true);
+        listViewInterestedUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                String userName = listViewInterestedUsers.getItemAtPosition(position).toString();
+
+                Intent i = new Intent(DisplayTaskActivity.this, ChatActivity.class);
+                i.putExtra("userNameFrom",user.getUserName());
+                i.putExtra("userNameTo", userName);
+                i.putExtra("task",t);
+                startActivity(i);
+
+            }
+        });
 
         String currentUser = user.getUserName();
         String poster = t.getUserOwner();
