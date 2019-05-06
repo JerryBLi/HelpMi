@@ -1,6 +1,7 @@
 package ese543.helpmi.core;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -145,7 +146,14 @@ public class DisplayTaskActivity extends AppCompatActivity {
     public void viewImages(View view)
     {
         pictures.size();
-        return;
+        ArrayList<Uri> images = new ArrayList<>();
+        for(File f : pictures)
+            images.add(Uri.fromFile(f));
+        Intent intent = new Intent(this, ViewTaskImagesActivity.class);
+        intent.putParcelableArrayListExtra("taskImages", images);
+        intent.setType("image/*");
+        startActivity(intent);
+
     }
 
     private void getPictures()

@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/helpmi_ico"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".core.DisplayTaskActivity"></activity>
+        <activity android:name=".core.ViewTaskImagesActivity"></activity>
+        <activity android:name=".core.DisplayTaskActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,14 +45,15 @@
             android:label="@string/title_activity_login2" />
         <activity android:name=".CreateNewUserActivity" />
         <activity android:name=".core.ChatActivity" />
-        <activity android:name=".startup.SplashScreenActivity">
+        <activity android:name=".startup.SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
