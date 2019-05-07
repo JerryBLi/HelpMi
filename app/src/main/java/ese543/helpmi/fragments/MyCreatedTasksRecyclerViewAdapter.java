@@ -68,7 +68,7 @@ public class MyCreatedTasksRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
         public final TextView owner;
         public final TextView payment;
         public final TextView description;
-        public final TextView userAssigned;
+        //public final TextView userAssigned;
         public final TextView datePosted;
         public final TextView deliveryDate;
         public UserTask mItem;
@@ -80,7 +80,7 @@ public class MyCreatedTasksRecyclerViewAdapter extends RecyclerView.Adapter<MyCr
             owner = (TextView) view.findViewById(R.id.task_owner);
             payment = (TextView) view.findViewById(R.id.task_payment);
             description = (TextView) view.findViewById(R.id.task_description);
-            userAssigned = (TextView) view.findViewById(R.id.task_userAssigned);
+           // userAssigned = (TextView) view.findViewById(R.id.task_userAssigned);
             datePosted = view.findViewById(R.id.task_datePosted);
             deliveryDate = view.findViewById(R.id.task_deliveryDate);
         }

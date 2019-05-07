@@ -130,6 +130,7 @@ public class TaskFragment extends Fragment {
                         // create Task
                         UserTask task = new ese543.helpmi.core.UserTask(qowner, qtitle, qDatePosted,qdeliveryDate, qlatitude, qlongitude, qpayment, qisNegotiable, qdescription, qisComplete, quserAssigned);
                         task.setTaskID(qtaskID);
+                        task.setUserAssigned(quserAssigned);
                         task.setNumImages((int)qNumImgs);
                         // add to list
                         userTaskList.add(task);
